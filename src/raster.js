@@ -38,10 +38,10 @@ export function rasterHtml(tage, ansicht, heute) {
   const koepfe = tage.map((t) => kopf(t, heute)).join('');
   const zeilen = [];
   if (ansicht === 'alle') {
-    // Zwei Hunde nebeneinander, der zweite per CSS schwarz (wie der echte).
-    const hunde = '<span class="hundeicon" aria-label="Hunde"><span>🐕‍🦺</span><span class="schwarz">🦮</span></span>';
+    // Zwei Hunde nebeneinander, per CSS-Filter braun und schwarz gefärbt (wie die echten).
+    const hunde = '<span class="hundeicon" aria-label="Hunde"><span class="braun">🐕</span><span class="schwarz">🦮</span></span>';
     zeilen.push(zeile(`<span class="rl">${hunde}Morgen</span>`, tage.map((t) => hundeZelle(t, 'morgen')).join(''), 'hunde'));
-    zeilen.push(zeile(`<span class="rl">${hunde}Nach&shy;mittag</span>`, tage.map((t) => hundeZelle(t, 'nachmittag')).join(''), 'hunde'));
+    zeilen.push(zeile(`<span class="rl">${hunde}Nachmittag</span>`, tage.map((t) => hundeZelle(t, 'nachmittag')).join(''), 'hunde'));
   }
   zeilen.push(zeile('<img src="bilder/kia.png" alt="Kia PV5" class="autobild">', tage.map((t) => autoZelle(t, 'kia')).join(''), 'autos'));
   zeilen.push(zeile('<img src="bilder/rav.png" alt="Toyota RAV" class="autobild">', tage.map((t) => autoZelle(t, 'rav')).join(''), 'autos'));
