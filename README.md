@@ -80,7 +80,9 @@ einmal ausfällt (alte Basis in `.secrets/abo-url-gist.txt`).
   (ganzer Tag)». Kein Kia, keine Hunde, und Tage mit noch offenem Auto
   erscheinen erst, sobald der RAV festgelegt ist (Entscheid 18.10.2026).
 
-Runden von Manuel stehen in keinem Abo. Einen Sammelkalender (Outlook) und
+Alle Abos reichen 4 Wochen zurück und voraus bis zum 31. Dezember des
+nächsten Jahres (Entscheid 18.10.2026), damit jeder vorbelegte Mittwoch
+schon im Kalender steht. Runden von Manuel stehen in keinem Abo. Einen Sammelkalender (Outlook) und
 Android-Links gibt es seit 18.10.2026 nicht mehr.
 
 Einrichten:

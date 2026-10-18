@@ -34,10 +34,14 @@ export async function ladeDocs(projektId, apiKey, geheim, fetchFn = fetch) {
   return docs;
 }
 
+/** 28 Tage zurück und voraus bis zum 31.12. des nächsten Jahres (Wunsch Manuel 18.10.2026),
+ *  damit jeder vorbelegte Mittwoch schon im Kalender steht. */
 export function tageImFenster(heute, docs) {
   const tage = [];
-  for (let i = -28; i <= 56; i++) {
+  const ende = new Date(heute.getFullYear() + 1, 11, 31, 12);
+  for (let i = -28; ; i++) {
     const d = new Date(heute.getFullYear(), heute.getMonth(), heute.getDate() + i, 12);
+    if (d > ende) break;
     if (d.getDay() === 0 || d.getDay() === 6) continue; // kein Wochenende, wie auf der Seite
     const k = tagSchluessel(d);
     tage.push(loeseTag(k, docs[k]));
