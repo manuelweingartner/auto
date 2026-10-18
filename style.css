@@ -65,8 +65,8 @@ button:focus-visible, select:focus-visible { outline: 2px solid var(--manuel); o
 .tagknopf .wt { font-size: 13px; font-weight: 600; }
 .tagknopf .dt { font-size: 11px; color: var(--muted); }
 .rl { display: block; hyphens: manual; }
-.rl small { display: block; font-size: 10px; line-height: 1.1; letter-spacing: .02em; opacity: .8; }
 .autobild { display: block; width: 54px; height: auto; }
+.hundebild { display: block; width: 54px; height: auto; margin-bottom: 2px; }
 
 .runde, .auto { width: 100%; min-height: 44px; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.1; }
 .runde { font-size: 18px; font-weight: 700; }

@@ -54,6 +54,7 @@ export function dateien(tage, jetzt) {
   return {
     'auto-hunde.ics': baueIcs(tage, jetzt),
     'auto-hunde-rav.ics': baueIcs(tage, jetzt, { nurRav: true }),
+    'auto-hunde-hunde.ics': baueIcs(tage, jetzt, { nurHunde: true }),
   };
 }
 

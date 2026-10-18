@@ -65,6 +65,15 @@ test('Kopf, stabile UIDs, DTSTAMP in UTC, CRLF', () => {
   assert.ok(s.split('\r\n').every((z) => !z.includes('\n')));
 });
 
+test('nurHunde: nur Svenjas Hunderunden, keine Abwesenheiten, eigener Kalendername', () => {
+  const s = baueIcs(woche(), JETZT, { nurHunde: true });
+  assert.equal(s.match(/BEGIN:VEVENT/g).length, 2);
+  assert.ok(s.includes('SUMMARY:Hunde: Svenja (Morgen und Nachmittag)'));
+  assert.ok(s.includes('SUMMARY:Hunde: Svenja (Nachmittag)'));
+  assert.ok(!s.includes('Manuel weg'));
+  assert.ok(s.includes('X-WR-CALNAME:Hunde Svenja'));
+});
+
 test('nurRav: nur RAV-Abwesenheiten, kein Kia, kein offenes Auto, keine Hunderunden, eigener Kalendername', () => {
   const s = baueIcs(woche(), JETZT, { nurRav: true });
   assert.equal(s.match(/BEGIN:VEVENT/g).length, 1);

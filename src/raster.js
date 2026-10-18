@@ -38,8 +38,9 @@ export function rasterHtml(tage, ansicht, heute) {
   const koepfe = tage.map((t) => kopf(t, heute)).join('');
   const zeilen = [];
   if (ansicht === 'alle') {
-    zeilen.push(zeile('<span class="rl"><small>Hunde</small>Morgen</span>', tage.map((t) => hundeZelle(t, 'morgen')).join(''), 'hunde'));
-    zeilen.push(zeile('<span class="rl"><small>Hunde</small>Nach&shy;mittag</span>', tage.map((t) => hundeZelle(t, 'nachmittag')).join(''), 'hunde'));
+    const hunde = '<img src="bilder/hunde.png" alt="Hunde" class="hundebild">';
+    zeilen.push(zeile(`<span class="rl">${hunde}Morgen</span>`, tage.map((t) => hundeZelle(t, 'morgen')).join(''), 'hunde'));
+    zeilen.push(zeile(`<span class="rl">${hunde}Nach&shy;mittag</span>`, tage.map((t) => hundeZelle(t, 'nachmittag')).join(''), 'hunde'));
   }
   zeilen.push(zeile('<img src="bilder/kia.png" alt="Kia PV5" class="autobild">', tage.map((t) => autoZelle(t, 'kia')).join(''), 'autos'));
   zeilen.push(zeile('<img src="bilder/rav.png" alt="Toyota RAV" class="autobild">', tage.map((t) => autoZelle(t, 'rav')).join(''), 'autos'));

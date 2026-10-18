@@ -42,8 +42,9 @@ test('Hunderunde zeigt nur die Person, nie eine Uhrzeit; Zeilen sind als Hunde b
   assert.ok(!h.includes('16-17'));
   assert.match(h, /data-slot="morgen"[^>]*>M<\/button>/);
   assert.match(h, /data-slot="nachmittag"[^>]*>S<\/button>/);
-  assert.match(h, /<th scope="row"><span class="rl"><small>Hunde<\/small>Morgen<\/span>/);
-  assert.match(h, /<small>Hunde<\/small>Nach&shy;mittag/);
+  assert.match(h, /<th scope="row"><span class="rl"><img src="bilder\/hunde.png" alt="Hunde" class="hundebild">Morgen<\/span>/);
+  assert.match(h, /<img src="bilder\/hunde.png" alt="Hunde" class="hundebild">Nach&shy;mittag/);
+  assert.ok(!h.includes('<small>Hunde</small>'));
 });
 
 test('Mittwoch mit Zeit und offenem Auto zeigt offen 09-15 in beiden Autozeilen', () => {

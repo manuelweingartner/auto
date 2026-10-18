@@ -1,6 +1,6 @@
 // Abo-Adressen aus der Gist-Basis. Reine Funktion, testbar in Node.
 
-const DATEI = { alle: 'auto-hunde.ics', rav: 'auto-hunde-rav.ics' };
+const DATEI = { alle: 'auto-hunde.ics', rav: 'auto-hunde-rav.ics', hunde: 'auto-hunde-hunde.ics' };
 
 function dreifach(https) {
   return {
@@ -16,5 +16,6 @@ export function aboLinks(basis) {
   return {
     alle: dreifach(`${b}/${DATEI.alle}`),
     rav: dreifach(`${b}/${DATEI.rav}`),
+    hunde: dreifach(`${b}/${DATEI.hunde}`),
   };
 }
