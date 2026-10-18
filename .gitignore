@@ -1,0 +1,5 @@
+.secrets/
+firestore.rules
+node_modules/
+.firebase/
+.superpowers/
