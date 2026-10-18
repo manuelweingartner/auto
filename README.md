@@ -22,6 +22,8 @@ Gerät das Geheimnis, danach reicht die Seite ohne `#`.
 - Jeder Mittwoch ist vorbelegt: ganzer Tag, Auto «offen», Svenja beide Runden.
 - «Nur Autos» ist die Ansicht für die Eltern. Die Seite merkt sich die Wahl.
 - Alle vier dürfen alles ändern, Änderungen erscheinen sofort bei allen.
+- Bei schlechtem Empfang schliesst das Blatt trotzdem sofort; die Änderung wird
+  nachgeschickt, sobald Netz da ist, auch nach Schliessen der App.
 
 ## Auf den Startbildschirm
 
@@ -53,6 +55,9 @@ immer zuerst auf der Seite.
   `h/<geheim>/tage/<YYYY-MM-DD>`. Die Regeln erlauben Lesen und Schreiben nur
   unter dem Geheimnis. Regeln neu deployen: `scripts/regeln-deployen.ps1`
   (braucht Node 20 portable und `firebase login`).
+- GitHub schaltet Cron-Workflows nach 60 Tagen ohne Commit ab; der Workflow
+  schaltet sich darum bei jedem Lauf selbst wieder ein. Bleibt das Gist trotzdem
+  stehen: unter Actions nachsehen, ob `ics` noch läuft.
 - Repo-Secrets für die Action: `AUTO_HUNDE_GEHEIM`, `GIST_ID`, `GIST_TOKEN`.
   `GIST_TOKEN` ist zurzeit das gh-Token von `manuelweingartner`; ein
   feingranulares Token nur mit Gist-Recht wäre enger.

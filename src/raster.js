@@ -27,8 +27,8 @@ function autoZelle(t, auto) {
   const a = t.abwesend;
   let inhalt = '';
   if (a && a.auto === auto) inhalt = a.von == null ? 'ganzer Tag' : zeitText(a.von, a.bis);
-  else if (a && a.auto === 'offen') inhalt = 'offen';
-  const klasse = inhalt === 'offen' ? 'auto offen' : `auto ${auto}`;
+  else if (a && a.auto === 'offen') inhalt = a.von == null ? 'offen' : `offen ${zeitText(a.von, a.bis)}`;
+  const klasse = a && a.auto === 'offen' ? 'auto offen' : `auto ${auto}`;
   return `<td><button type="button" class="${klasse}" data-tag="${t.datum}" data-auto="${auto}">${esc(inhalt)}</button></td>`;
 }
 

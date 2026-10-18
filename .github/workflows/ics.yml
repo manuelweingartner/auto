@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: read
+  actions: write
 
 jobs:
   export:
@@ -14,6 +15,11 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
+      # GitHub schaltet Cron-Workflows nach 60 Tagen ohne Commit still ab. Das Repo ändert sich
+      # nach dem Bau kaum, darum hält sich der Workflow hier bei jedem Lauf selbst wach.
+      - run: gh api -X PUT "repos/$GITHUB_REPOSITORY/actions/workflows/ics.yml/enable"
+        env:
+          GH_TOKEN: ${{ github.token }}
       - uses: actions/setup-node@v4
         with:
           node-version: 20

@@ -57,8 +57,10 @@ function loeseRunde(slot, abwesend, gespeichert) {
 }
 
 export function loeseTag(datum, doc) {
+  // Kein Feld «abwesend» (kein Dokument oder nur Runden gespeichert): Mittwoch bleibt vorbelegt.
+  // «abwesend: null» ist dagegen ein bewusstes Löschen.
   let abwesend;
-  if (doc === undefined) abwesend = istMittwoch(datum) ? { ...MITTWOCH_VORBELEGUNG } : null;
+  if (doc === undefined || !('abwesend' in doc)) abwesend = istMittwoch(datum) ? { ...MITTWOCH_VORBELEGUNG } : null;
   else abwesend = doc.abwesend ?? null;
   return {
     datum,

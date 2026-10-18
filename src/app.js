@@ -55,12 +55,15 @@ function tagVon(datum) { return loeseTag(datum, state.docs[datum]); }
 
 function schliesse() { $('#blatt').close(); }
 
-async function speichere(p) {
-  try { await p; schliesse(); } catch (e) {
+// Blatt sofort schliessen: Firestore zeigt die Änderung lokal sofort und schickt sie nach,
+// sobald Netz da ist. Nur eine Ablehnung des Servers wird gemeldet.
+function speichere(p) {
+  schliesse();
+  p.catch((e) => {
     console.error(e);
-    const f = $('#blatt #fehler');
-    if (f) f.textContent = 'Speichern hat nicht geklappt. Bitte nochmals versuchen.';
-  }
+    $('#meldung').textContent = 'Speichern hat nicht geklappt. Bitte nochmals versuchen.';
+    $('#meldung').hidden = false;
+  });
 }
 
 function start() {

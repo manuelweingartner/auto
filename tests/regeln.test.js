@@ -57,3 +57,9 @@ test('pruefeAbwesenheit sperrt von >= bis und bis > 24', () => {
   assert.equal(pruefeAbwesenheit({ auto: 'kia', von: 7, bis: 24 }), null);
   assert.equal(pruefeAbwesenheit({ auto: 'offen', von: null, bis: null }), null);
 });
+
+test('Mittwoch mit Handrunde, aber ohne abwesend-Feld: Vorbelegung bleibt', () => {
+  const t = loeseTag('2026-10-21', { morgen: { person: 'M', von: 6, bis: 7, quelle: 'hand' } });
+  assert.deepEqual(t.abwesend, { auto: 'offen', von: null, bis: null });
+  assert.deepEqual([t.morgen.person, t.nachmittag.person, t.nachmittag.quelle], ['M', 'S', 'vorschlag']);
+});

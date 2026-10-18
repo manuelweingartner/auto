@@ -1,11 +1,15 @@
 // Firestore-Zugriff. Pfad: h/{geheim}/tage/{YYYY-MM-DD}. Schreiben immer feldweise (merge).
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
 import {
-  getFirestore, collection, doc, query, where, documentId, onSnapshot, setDoc, deleteField,
+  initializeFirestore, persistentLocalCache, persistentMultipleTabManager,
+  collection, doc, query, where, documentId, onSnapshot, setDoc, deleteField,
 } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
 import { firebaseConfig } from './firebase-config.js';
 
-const db = getFirestore(initializeApp(firebaseConfig));
+// Lokaler Zwischenspeicher: Schreibvorgänge bei schlechtem Empfang überleben das Schliessen der App.
+const db = initializeFirestore(initializeApp(firebaseConfig), {
+  localCache: persistentLocalCache({ tabManager: persistentMultipleTabManager() }),
+});
 const tage = (geheim) => collection(db, 'h', geheim, 'tage');
 
 export function beobachteWoche(geheim, datums, rueckruf, fehler) {

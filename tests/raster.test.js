@@ -39,3 +39,9 @@ test('Svenja-Runde als S, abweichende Zeit sichtbar', () => {
   assert.ok(h.includes('05-06'));
   assert.match(h, /data-slot="nachmittag"[^>]*>[\s\S]*?S/);
 });
+
+test('Mittwoch mit Zeit und offenem Auto zeigt offen 09-15 in beiden Autozeilen', () => {
+  const t = loeseTag('2026-10-21', { abwesend: { auto: 'offen', von: 9, bis: 15 } });
+  const h = rasterHtml([t], 'alle', '2026-10-19');
+  assert.equal((h.match(/class="auto offen"[^>]*>offen 09-15</g) || []).length, 2);
+});
