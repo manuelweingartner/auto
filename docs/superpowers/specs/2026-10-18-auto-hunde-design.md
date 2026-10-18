@@ -67,6 +67,17 @@ oder RAV wählt. Ein einzelner Mittwoch lässt sich löschen, dann gilt dort der
 Normalfall. Die Vorbelegung ist nur ein Startwert, kein gespeicherter Eintrag,
 bis jemand den Tag ändert.
 
+**Herkunft einer Runde (Claudes Wahl):** Jede Runde weiss, ob sie Standard,
+Vorschlag oder von Hand gesetzt ist. Die Svenja-Runden der Mittwoch-Vorbelegung
+sind Vorschläge. Ändert jemand die Abwesenheit eines Mittwochs (z.B. auf Kia
+09-15), läuft die Überschneidungsregel neu, und nicht von Hand gesetzte Runden
+folgen ihr. Wird ein Tag gelöscht, gilt für alle Runden wieder der Normalfall,
+auch für von Hand gesetzte.
+
+**Zeiten:** nur volle Stunden (Manuel-Entscheid). Auswahl am Handy als Liste von
+Stunden. Abwesenheiten sind nie mehrtägig und enden nie nach Mitternacht; «bis
+24» ist das späteste Ende.
+
 **Wer ändert:** Alle vier dürfen alles ändern. Die Eltern tragen keine eigene
 RAV-Nutzung ein (bewusst nicht gewünscht).
 
@@ -113,8 +124,9 @@ Die Seite liefert einen **Kalender-Abo-Link (ICS)**:
 Inhalt des Abos, nur Abweichungen vom Normalfall:
 - Abwesenheit mit Zeit: Termin «Manuel weg 07-22 (Kia)».
 - Abwesenheit ganzer Tag: Ganztagestermin «Manuel weg (RAV)», bzw. «(Auto offen)».
-- Jede Runde, die nicht Manuel zur Standardzeit geht: Termin zur jeweiligen Zeit,
-  z.B. «Hunde: Svenja» 16-17 oder «Hunde: Manuel» 05-06.
+- Nur Runden, die Svenja geht: Termin «Hunde: Svenja» zur jeweiligen Zeit, z.B.
+  08-09 oder 16-17. Runden von Manuel erscheinen nie im Abo, auch nicht zu
+  abweichender Zeit (Manuel-Entscheid: «normal mache ich Hunde»).
 - Zeitzone Europe/Zurich. Zeitraum mindestens vier Wochen zurück und acht Wochen
   voraus, damit die vorbelegten Mittwoche erscheinen.
 
@@ -134,7 +146,10 @@ beim Einrichten bestätigen). Künftige Handeinträge löscht er beim Umstieg.
 - **Daten nicht im Repo.** Wann das Haus leer ist, gehört nicht in ein
   öffentliches Repo. Daten liegen in einem **neuen, eigenen Firebase-Projekt**
   (nur Firestore, Gratisstufe, kein Hosting, keine Functions), nicht in einem
-  Projekt von loggd, clutch oder mietsenkung.
+  Projekt von loggd, clutch oder mietsenkung. Es läuft unter demselben
+  Google-Konto wie loggd. Claude legt Projekt, Datenbank, Regeln und Service
+  Account selbst über die Kommandozeile an (Manuel-Entscheid); nur Logins tippt
+  Manuel selbst.
 - Der geheime Teil steckt im Link (nicht im Code des Repos) und bestimmt den
   Firestore-Pfad. Die Firestore-Regeln erlauben Lesen und Schreiben nur unter
   genau diesem Pfad; alles andere ist gesperrt.
