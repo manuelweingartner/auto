@@ -18,9 +18,10 @@ unter `___PRIVAT\Auto-Hunde`.
 - Tippen auf den Wochentag oder eine Auto-Zelle: «Manuel weg mit» Kia, RAV,
   noch offen oder kein Auto, ganzer Tag oder von-bis in vollen Stunden. «Noch
   offen» heisst: Manuel ist weg, das Auto wird später festgelegt; die Seite
-  zeigt «offen» in beiden Autozeilen, in keinem Kalender steht etwas. «Kein Auto»
+  zeigt «offen» in beiden Autozeilen, der Eltern-Kalender zeigt nichts, der
+  Cozi-Kalender «Auto Manuel» zeigt «Manuel weg (Auto noch offen)». «Kein Auto»
   (Zug) steht ebenso in beiden Autozeilen als «ohne Auto», im Cozi-Kalender
-  als «Manuel weg 07-17 (ohne Auto)», bei den Eltern nicht. «Löschen» setzt
+  als «Manuel weg 7 bis 17 Uhr ca. (ohne Auto)», bei den Eltern nicht. «Löschen» setzt
   den Tag auf Normalfall zurück.
 - Tippen auf M oder S: die andere Person ist vorgewählt, Speichern genügt
   (zwei Tipps). Startstunde änderbar.
@@ -52,22 +53,28 @@ unter `___PRIVAT\Auto-Hunde`.
 
 ## Kalender-Abo (Cozi, Outlook)
 
-Eine GitHub Action schreibt alle 10 Minuten drei ICS-Dateien in ein geheimes
-Gist. Das Zahnrad auf der Seite zeigt genau drei Zeilen (Entscheid 18.10.2026,
-vorher waren es vier Kalender mit je drei Links, zu viel zum Kopieren); die
-Basis steht in `.secrets/abo-url.txt` und in Firestore unter
-`h/<geheim>/meta/abo`.
+Seit 18.10.2026 abends liefert ein Cloudflare Worker (`worker/`, Name
+`auto-hunde-ics`, Konto Manuel) die drei Kalender live aus Firestore:
+`https://auto-hunde-ics.auto-hunde.workers.dev/<geheim>/<datei>`. Jeder Abruf
+baut das ICS frisch (60 Sekunden Cache), Action und Gist-Cache fallen damit
+als Verzögerung weg. Das Zahnrad auf der Seite zeigt genau drei Zeilen
+(Entscheid 18.10.2026, vorher waren es vier Kalender mit je drei Links, zu
+viel zum Kopieren); die Basis steht in `.secrets/abo-url.txt` und in Firestore
+unter `h/<geheim>/meta/abo`. Die GitHub Action schreibt dieselben drei Dateien
+weiter alle 10 Minuten ins geheime Gist, als Ersatzweg, falls der Worker
+einmal ausfällt (alte Basis in `.secrets/abo-url-gist.txt`).
 
 - `auto-hunde-hunde.ics` («Hunde Svenja», Cozi): nur Svenjas Hunderunden als
   Ganztagestermin «Hunde: Svenja (Morgen und Nachmittag)», keine
   Abwesenheiten. In Cozi als Kalender von Svenja eintragen, dann steht jede
   neue oder verschobene Runde automatisch bei ihr.
-- `auto-hunde-manuel.ics` («Auto Manuel», Cozi): nur Manuels Abwesenheiten
-  mit Kia, RAV oder ohne Auto («Manuel weg 07-22 (Kia)», «Manuel weg (RAV)»,
-  «Manuel weg 07-17 (ohne Auto)»), keine Hunderunden und kein «noch offen»
-  (Entscheid 18.10.2026, sonst stünde jeder vorbelegte Mittwoch in Cozi). In
-  Cozi als Kalender von Manuel eintragen. Cozi ordnet ein Abo als Ganzes
-  einer Person zu, darum pro Person ein eigener Kalender.
+- `auto-hunde-manuel.ics` («Auto Manuel», Cozi): alle Abwesenheiten von
+  Manuel («Manuel weg 7 bis 22 Uhr ca. (mit Kia)», «Manuel weg (mit Toyota)»,
+  «Manuel weg 7 bis 17 Uhr ca. (ohne Auto)», «Manuel weg (Auto noch offen)», also auch der
+  vorbelegte Mittwoch; Entscheid 18.10.2026 abends, nach kurzem Ausschluss
+  der offenen Tage), keine Hunderunden. In Cozi als Kalender von Manuel
+  eintragen. Cozi ordnet ein Abo als Ganzes einer Person zu, darum pro Person
+  ein eigener Kalender.
 - `auto-hunde-rav.ics` («nur RAV», Eltern, iPhone): nur Tage, an denen der RAV
   weg ist. Kein Kia, keine Hunde, und Tage mit noch offenem Auto erscheinen erst,
   sobald der RAV festgelegt ist (Entscheid 18.10.2026).
@@ -86,10 +93,20 @@ Einrichten:
   Kalender erscheint in der Kalender-App und wird von iOS selbst
   aktualisiert.
 
-Verzögerung: GitHub liefert die Raw-Adresse bis zu 5 Minuten aus dem Cache, die
-Action läuft alle 10 Minuten, dazu kommt das Abfrage-Intervall des Kalenders
-(Cozi etwa eine Stunde, iOS je nach Einstellung). Gemessene Cozi-Verzögerung:
-noch nicht gemessen. Kurzfristiges steht immer zuerst auf der Seite.
+Verzögerung: der Worker liefert den Stand von höchstens einer Minute. Was
+bleibt, ist das Abfrage-Intervall des Kalenders selbst (Cozi etwa eine Stunde,
+ohne API und ohne Aktualisieren-Knopf; iOS je nach Einstellung). Gemessene
+Cozi-Verzögerung: noch nicht gemessen. Kurzfristiges steht immer zuerst auf der
+Seite. Cozi übernimmt den Kalendernamen beim ersten Einlesen; stimmt er nicht
+mehr, Kalender entfernen und neu hinzufügen, notfalls mit `?2` am Ende der
+Adresse.
+
+Worker warten: Login einmalig mit `npx wrangler login` (vom Handy aus:
+`--browser=false`, den Link öffnen, die `localhost:8976`-Adresse der
+Fehlerseite auf dem Laptop mit `curl` aufrufen). Deploy mit
+`npx wrangler deploy --config worker/wrangler.toml`, Geheimnis mit
+`npx wrangler secret put GEHEIM --config worker/wrangler.toml` (per stdin).
+Tests in `tests/worker.test.js`.
 
 ## Technik
 
@@ -105,7 +122,7 @@ noch nicht gemessen. Kurzfristiges steht immer zuerst auf der Seite.
 - Repo-Secrets für die Action: `AUTO_HUNDE_GEHEIM`, `GIST_ID`, `GIST_TOKEN`.
   `GIST_TOKEN` ist zurzeit das gh-Token von `manuelweingartner`; ein
   feingranulares Token nur mit Gist-Recht wäre enger.
-- Tests: `npm test` (Fachregeln, ICS, Raster, Export).
+- Tests: `npm test` (Fachregeln, ICS, Raster, Export, Worker).
 - **`version.txt` bei jedem Commit hochzählen, der Seite, Skripte oder Stil
   ändert.** Safari und die Startbildschirm-App laden eine offene Seite nie
   neu, und Pages liefert jede Datei mit 10 Minuten Browser-Cache. Die Seite

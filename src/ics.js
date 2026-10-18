@@ -1,7 +1,8 @@
 // ICS-Abo aus gelösten Tagen. Zeiten als Wanduhrzeit mit TZID, nie über Millisekunden gerechnet.
 import { datumAus, tagSchluessel } from './regeln.js';
 
-const AUTO_NAME = { kia: 'Kia', rav: 'RAV', offen: 'Auto offen', keines: 'ohne Auto' };
+// Wortlaut in der Klammer, Wunsch Manuel 18.10.2026: «mit Toyota» statt «RAV».
+const AUTO_NAME = { kia: 'mit Kia', rav: 'mit Toyota', offen: 'Auto noch offen', keines: 'ohne Auto' };
 const zweistellig = (n) => String(n).padStart(2, '0');
 const kompakt = (schluessel) => schluessel.replaceAll('-', '');
 
@@ -24,7 +25,8 @@ function titelAbwesend(a) {
   const auto = AUTO_NAME[a.auto];
   const klammer = auto ? ` (${auto})` : '';
   if (a.von == null) return `Manuel weg${klammer}`;
-  return `Manuel weg ${zweistellig(a.von)}-${zweistellig(a.bis)}${klammer}`;
+  // Im Kalender ausgeschrieben und mit «ca.», weil die Stunden grob sind (Wunsch Manuel 18.10.2026).
+  return `Manuel weg ${a.von} bis ${a.bis} Uhr ca.${klammer}`;
 }
 
 function termin({ uid, titel, datum, von, bis, ganztag }, jetzt) {
@@ -48,15 +50,14 @@ const kopf = (name) => [
 /** nurRav: Kalender für die Eltern. Nur Tage, an denen der RAV weg ist; kein Kia,
  *  kein offenes Auto (Entscheid Manuel 18.10.2026), kein «kein Auto», keine Hunderunden. */
 /** nurHunde: Kalender für Svenja in Cozi. Nur ihre Hunderunden, keine Abwesenheiten.
- *  nurManuel: Kalender für Manuel in Cozi. Seine Abwesenheiten mit Kia, RAV oder ohne Auto, keine
- *  Hunderunden und kein «offen» (Entscheid Manuel 18.10.2026: sonst steht jeder vorbelegte Mittwoch in Cozi). */
+ *  nurManuel: Kalender für Manuel in Cozi. Alle seine Abwesenheiten (Kia, RAV, ohne Auto, noch offen,
+ *  also auch der vorbelegte Mittwoch; Entscheid Manuel 18.10.2026 abends), keine Hunderunden. */
 export function baueIcs(tage, jetzt, { nurRav = false, nurHunde = false, nurManuel = false } = {}) {
   const name = nurRav ? 'Auto-Hunde RAV' : nurHunde ? 'Hunde Svenja' : nurManuel ? 'Auto Manuel' : 'Auto-Hunde';
   const zeilen = kopf(name);
   for (const t of tage) {
     const a = t.abwesend;
-    const passt = nurRav ? a?.auto === 'rav' : nurManuel ? a?.auto !== 'offen' : true;
-    if (a && !nurHunde && passt) {
+    if (a && !nurHunde && (!nurRav || a.auto === 'rav')) {
       zeilen.push(...termin({
         uid: `${t.datum}-abwesend`, titel: titelAbwesend(a), datum: t.datum,
         von: a.von, bis: a.bis, ganztag: a.von == null,
