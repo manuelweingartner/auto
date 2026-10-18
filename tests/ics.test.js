@@ -74,6 +74,16 @@ test('nurHunde: nur Svenjas Hunderunden, keine Abwesenheiten, eigener Kalenderna
   assert.ok(s.includes('X-WR-CALNAME:Hunde Svenja'));
 });
 
+test('nurManuel: alle Abwesenheiten von Manuel (Kia, RAV, offen), keine Hunderunden, eigener Kalendername', () => {
+  const s = baueIcs(woche(), JETZT, { nurManuel: true });
+  assert.equal(s.match(/BEGIN:VEVENT/g).length, 3);
+  assert.ok(s.includes('SUMMARY:Manuel weg 07-16 (RAV)'));
+  assert.ok(s.includes('SUMMARY:Manuel weg (Auto offen)'));
+  assert.ok(s.includes('SUMMARY:Manuel weg 07-22 (Kia)'));
+  assert.ok(!s.includes('Hunde: Svenja'));
+  assert.ok(s.includes('X-WR-CALNAME:Auto Manuel'));
+});
+
 test('nurRav: nur RAV-Abwesenheiten, kein Kia, kein offenes Auto, keine Hunderunden, eigener Kalendername', () => {
   const s = baueIcs(woche(), JETZT, { nurRav: true });
   assert.equal(s.match(/BEGIN:VEVENT/g).length, 1);

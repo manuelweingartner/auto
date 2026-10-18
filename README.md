@@ -47,17 +47,20 @@ unter `___PRIVAT\Auto-Hunde`.
 
 ## Kalender-Abo (Cozi, Outlook)
 
-Eine GitHub Action schreibt alle 10 Minuten drei ICS-Dateien in ein geheimes
+Eine GitHub Action schreibt alle 10 Minuten vier ICS-Dateien in ein geheimes
 Gist. Die Adressen zeigt das Zahnrad auf der Seite; die Basis steht in
 `.secrets/abo-url.txt` und in Firestore unter `h/<geheim>/meta/abo`.
 
-- `auto-hunde.ics` («Autos und Hunde», für Outlook): «Manuel weg 07-22 (Kia)»,
-  «Manuel weg (RAV)» ganztägig, und pro Tag ein Ganztagestermin «Hunde: Svenja
-  (Morgen und Nachmittag)» für Runden, die Svenja geht. Runden von Manuel
-  stehen nicht im Abo.
-- `auto-hunde-hunde.ics` («Hunde Svenja», für Cozi): nur Svenjas Hunderunden,
-  keine Abwesenheiten. In Cozi als Kalender von Svenja eintragen, dann steht
-  jede neue oder verschobene Runde automatisch bei ihr.
+- `auto-hunde-hunde.ics` («Hunde Svenja», für Cozi): nur Svenjas Hunderunden
+  als Ganztagestermin «Hunde: Svenja (Morgen und Nachmittag)», keine
+  Abwesenheiten. In Cozi als Kalender von Svenja eintragen, dann steht jede
+  neue oder verschobene Runde automatisch bei ihr.
+- `auto-hunde-manuel.ics` («Auto Manuel», für Cozi): nur Manuels Abwesenheiten
+  («Manuel weg 07-22 (Kia)», «Manuel weg (RAV)», «Manuel weg (Auto offen)»),
+  keine Hunderunden. In Cozi als Kalender von Manuel eintragen. Cozi ordnet
+  ein Abo als Ganzes einer Person zu, darum pro Person ein eigener Kalender.
+- `auto-hunde.ics` («Autos und Hunde», für Outlook): beides in einem. Runden
+  von Manuel stehen in keinem Abo.
 - `auto-hunde-rav.ics` («nur RAV», für die Eltern): nur Tage, an denen der RAV
   weg ist. Kein Kia, keine Hunde, und Tage mit noch offenem Auto erscheinen erst,
   sobald der RAV festgelegt ist (Entscheid 18.10.2026).
@@ -70,10 +73,9 @@ Einrichten:
   Adresse; dort «Hinzufügen». In der Google-Kalender-App danach unter
   Einstellungen den neuen Kalender einblenden.
 - **Cozi:** Einstellungen, «Connected Calendars», «Add a calendar from a URL»,
-  Adresse von «Hunde Svenja» einfügen, als Familienmitglied Svenja wählen. Cozi
-  zeigt die Einträge nur lesbar und aktualisiert laut Cozi-Hilfe etwa
-  stündlich. Die Zuordnung zu Svenja gilt für den ganzen Kalender, darum ist
-  es ein eigener Kalender ohne Autos.
+  zweimal: Adresse von «Hunde Svenja» mit Familienmitglied Svenja, Adresse von
+  «Auto Manuel» mit Familienmitglied Manuel. Cozi zeigt die Einträge nur
+  lesbar und aktualisiert laut Cozi-Hilfe etwa stündlich.
 - **Outlook:** Kalender, «Kalender hinzufügen», «Aus dem Internet abonnieren»,
   Adresse einfügen. Nur für Manuel sichtbar, ohne Wirkung auf die
   Verfügbarkeit.

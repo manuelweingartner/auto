@@ -13,6 +13,8 @@ test('aboLinks: https, webcal und Google-Kalender-Link für beide Kalender', () 
   assert.equal(l.rav.webcal, 'webcal://gist.githubusercontent.com/jemand/abc123/raw/auto-hunde-rav.ics');
   assert.equal(l.hunde.https, `${BASIS}/auto-hunde-hunde.ics`);
   assert.equal(l.hunde.webcal, 'webcal://gist.githubusercontent.com/jemand/abc123/raw/auto-hunde-hunde.ics');
+  assert.equal(l.manuel.https, `${BASIS}/auto-hunde-manuel.ics`);
+  assert.equal(l.manuel.webcal, 'webcal://gist.githubusercontent.com/jemand/abc123/raw/auto-hunde-manuel.ics');
 });
 
 test('aboLinks verträgt einen Schrägstrich am Ende', () => {

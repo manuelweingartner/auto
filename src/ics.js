@@ -47,9 +47,11 @@ const kopf = (name) => [
 
 /** nurRav: Kalender für die Eltern. Nur Tage, an denen der RAV weg ist; kein Kia,
  *  kein offenes Auto (Entscheid Manuel 18.10.2026), kein «kein Auto», keine Hunderunden. */
-/** nurHunde: Kalender für Svenja in Cozi. Nur ihre Hunderunden, keine Abwesenheiten. */
-export function baueIcs(tage, jetzt, { nurRav = false, nurHunde = false } = {}) {
-  const zeilen = kopf(nurRav ? 'Auto-Hunde RAV' : nurHunde ? 'Hunde Svenja' : 'Auto-Hunde');
+/** nurHunde: Kalender für Svenja in Cozi. Nur ihre Hunderunden, keine Abwesenheiten.
+ *  nurManuel: Kalender für Manuel in Cozi. Alle seine Abwesenheiten (Kia, RAV, offen), keine Hunderunden. */
+export function baueIcs(tage, jetzt, { nurRav = false, nurHunde = false, nurManuel = false } = {}) {
+  const name = nurRav ? 'Auto-Hunde RAV' : nurHunde ? 'Hunde Svenja' : nurManuel ? 'Auto Manuel' : 'Auto-Hunde';
+  const zeilen = kopf(name);
   for (const t of tage) {
     const a = t.abwesend;
     if (a && !nurHunde && (!nurRav || a.auto === 'rav')) {
@@ -58,7 +60,7 @@ export function baueIcs(tage, jetzt, { nurRav = false, nurHunde = false } = {}) 
         von: a.von, bis: a.bis, ganztag: a.von == null,
       }, jetzt));
     }
-    if (nurRav) continue;
+    if (nurRav || nurManuel) continue;
     // Svenjas Runden als ein Ganztagestermin pro Tag; Uhrzeiten werden bewusst nicht exportiert.
     const runden = ['morgen', 'nachmittag'].filter((slot) => t[slot].person === 'S');
     if (runden.length > 0) {

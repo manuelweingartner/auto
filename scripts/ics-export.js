@@ -49,12 +49,14 @@ export function ohneStempel(ics) {
   return ics.split('\r\n').filter((z) => !z.startsWith('DTSTAMP:')).join('\r\n');
 }
 
-/** Beide Kalenderdateien des Gists: alles (Svenja, Cozi, Outlook) und nur RAV (Eltern). */
+/** Die vier Kalenderdateien des Gists: alles (Outlook), nur RAV (Eltern),
+ *  nur Svenjas Hunderunden und nur Manuels Abwesenheiten (je ein Cozi-Kalender pro Person). */
 export function dateien(tage, jetzt) {
   return {
     'auto-hunde.ics': baueIcs(tage, jetzt),
     'auto-hunde-rav.ics': baueIcs(tage, jetzt, { nurRav: true }),
     'auto-hunde-hunde.ics': baueIcs(tage, jetzt, { nurHunde: true }),
+    'auto-hunde-manuel.ics': baueIcs(tage, jetzt, { nurManuel: true }),
   };
 }
 

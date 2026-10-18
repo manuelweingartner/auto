@@ -38,7 +38,8 @@ export function rasterHtml(tage, ansicht, heute) {
   const koepfe = tage.map((t) => kopf(t, heute)).join('');
   const zeilen = [];
   if (ansicht === 'alle') {
-    const hunde = '<img src="bilder/hunde.png" alt="Hunde" class="hundebild">';
+    // Zwei Hunde nebeneinander, der zweite per CSS schwarz (wie der echte).
+    const hunde = '<span class="hundeicon" aria-label="Hunde"><span>🐕‍🦺</span><span class="schwarz">🦮</span></span>';
     zeilen.push(zeile(`<span class="rl">${hunde}Morgen</span>`, tage.map((t) => hundeZelle(t, 'morgen')).join(''), 'hunde'));
     zeilen.push(zeile(`<span class="rl">${hunde}Nach&shy;mittag</span>`, tage.map((t) => hundeZelle(t, 'nachmittag')).join(''), 'hunde'));
   }
