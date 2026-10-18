@@ -3,3 +3,4 @@ firestore.rules
 node_modules/
 .firebase/
 .superpowers/
+.playwright-mcp/
