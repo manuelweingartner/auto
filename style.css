@@ -42,6 +42,7 @@ button:focus-visible, select:focus-visible { outline: 2px solid var(--manuel); o
 .meldung { max-width: 640px; margin: 24px auto; font-size: 17px; }
 
 .kopf { display: flex; flex-direction: column; gap: 8px; }
+.titel { margin: 0; font-size: 13px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); text-align: center; }
 .wochennav { display: flex; align-items: center; justify-content: space-between; }
 .wochennav > button { min-width: 44px; min-height: 40px; font-size: 26px; line-height: 1; color: var(--muted); }
 .wochentitel { font-size: 17px; font-weight: 600; color: var(--fg); font-variant-numeric: tabular-nums; }

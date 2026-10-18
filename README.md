@@ -1,4 +1,4 @@
-# Auto-Hunde
+# Planung Autos und Hunde
 
 Wochenübersicht Montag bis Freitag für die Familie: wer geht wann mit den
 Hunden, und wann ist welches Auto (Kia PV5, Toyota RAV) weg. Samstag und
