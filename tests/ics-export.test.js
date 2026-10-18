@@ -72,5 +72,5 @@ test('dateien liefert genau drei Kalender: Hunde Svenja, Auto Manuel, nur RAV', 
   assert.ok(!d['auto-hunde-manuel.ics'].includes('Hunde: Svenja'));
   assert.ok(!d['auto-hunde-rav.ics'].includes('Hunde: Svenja'));
   assert.ok(!d['auto-hunde-rav.ics'].includes('(mit Kia)'));
-  assert.ok(d['auto-hunde-rav.ics'].includes('Manuel weg 7 bis 16 Uhr ca. (mit Toyota)'));
+  assert.ok(d['auto-hunde-rav.ics'].includes('Manuel hat Toyota 7 bis 16 Uhr ca.'));
 });

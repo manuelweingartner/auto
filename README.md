@@ -76,8 +76,9 @@ einmal ausfällt (alte Basis in `.secrets/abo-url-gist.txt`).
   eintragen. Cozi ordnet ein Abo als Ganzes einer Person zu, darum pro Person
   ein eigener Kalender.
 - `auto-hunde-rav.ics` («nur RAV», Eltern, iPhone): nur Tage, an denen der RAV
-  weg ist. Kein Kia, keine Hunde, und Tage mit noch offenem Auto erscheinen erst,
-  sobald der RAV festgelegt ist (Entscheid 18.10.2026).
+  weg ist, als «Manuel hat Toyota 7 bis 16 Uhr ca.» bzw. «Manuel hat Toyota
+  (ganzer Tag)». Kein Kia, keine Hunde, und Tage mit noch offenem Auto
+  erscheinen erst, sobald der RAV festgelegt ist (Entscheid 18.10.2026).
 
 Runden von Manuel stehen in keinem Abo. Einen Sammelkalender (Outlook) und
 Android-Links gibt es seit 18.10.2026 nicht mehr.

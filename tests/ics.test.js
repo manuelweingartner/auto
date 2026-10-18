@@ -86,13 +86,17 @@ test('nurManuel: Kia, RAV, ohne Auto und noch offen (auch der Mittwoch), keine H
   assert.ok(s.includes('X-WR-CALNAME:Auto Manuel'));
 });
 
-test('nurRav: nur RAV-Abwesenheiten, kein Kia, kein offenes Auto, keine Hunderunden, eigener Kalendername', () => {
-  const s = baueIcs(woche(), JETZT, { nurRav: true });
-  assert.equal(s.match(/BEGIN:VEVENT/g).length, 1);
+test('nurRav: nur RAV-Abwesenheiten als «Manuel hat Toyota», kein Kia, kein offenes Auto, keine Hunderunden', () => {
+  const tage = woche();
+  tage.push(loeseTag('2026-10-26', { abwesend: { auto: 'rav', von: null, bis: null } }));
+  const s = baueIcs(tage, JETZT, { nurRav: true });
+  assert.equal(s.match(/BEGIN:VEVENT/g).length, 2);
   assert.ok(!s.includes('Hunde: Svenja'));
   assert.ok(!s.includes('(mit Kia)'));
   assert.ok(!s.includes('noch offen'));
-  assert.ok(s.includes('SUMMARY:Manuel weg 7 bis 16 Uhr ca. (mit Toyota)'));
+  assert.ok(!s.includes('Manuel weg'));
+  assert.ok(s.includes('SUMMARY:Manuel hat Toyota 7 bis 16 Uhr ca.\r\n'));
+  assert.ok(s.includes('SUMMARY:Manuel hat Toyota (ganzer Tag)\r\n'));
   assert.ok(s.includes('X-WR-CALNAME:Auto-Hunde RAV'));
   assert.ok(baueIcs(woche(), JETZT).includes('X-WR-CALNAME:Auto-Hunde\r\n'));
 });

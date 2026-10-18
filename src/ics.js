@@ -21,12 +21,19 @@ function stempel(jetzt) {
   return jetzt.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
 }
 
+// Im Kalender ausgeschrieben und mit «ca.», weil die Stunden grob sind (Wunsch Manuel 18.10.2026).
+const zeitWorte = (a) => `${a.von} bis ${a.bis} Uhr ca.`;
+
 function titelAbwesend(a) {
   const auto = AUTO_NAME[a.auto];
   const klammer = auto ? ` (${auto})` : '';
   if (a.von == null) return `Manuel weg${klammer}`;
-  // Im Kalender ausgeschrieben und mit «ca.», weil die Stunden grob sind (Wunsch Manuel 18.10.2026).
-  return `Manuel weg ${a.von} bis ${a.bis} Uhr ca.${klammer}`;
+  return `Manuel weg ${zeitWorte(a)}${klammer}`;
+}
+
+// Elternkalender: aus ihrer Sicht zählt, dass Manuel den Toyota hat (Wunsch Manuel 18.10.2026).
+function titelEltern(a) {
+  return `Manuel hat Toyota ${a.von == null ? '(ganzer Tag)' : zeitWorte(a)}`;
 }
 
 function termin({ uid, titel, datum, von, bis, ganztag }, jetzt) {
@@ -59,7 +66,7 @@ export function baueIcs(tage, jetzt, { nurRav = false, nurHunde = false, nurManu
     const a = t.abwesend;
     if (a && !nurHunde && (!nurRav || a.auto === 'rav')) {
       zeilen.push(...termin({
-        uid: `${t.datum}-abwesend`, titel: titelAbwesend(a), datum: t.datum,
+        uid: `${t.datum}-abwesend`, titel: nurRav ? titelEltern(a) : titelAbwesend(a), datum: t.datum,
         von: a.von, bis: a.bis, ganztag: a.von == null,
       }, jetzt));
     }
