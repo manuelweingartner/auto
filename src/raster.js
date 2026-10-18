@@ -43,7 +43,8 @@ export function rasterHtml(tage, ansicht, heute) {
     zeilen.push(zeile(`<span class="rl">${hunde}Morgen</span>`, tage.map((t) => hundeZelle(t, 'morgen')).join(''), 'hunde'));
     zeilen.push(zeile(`<span class="rl">${hunde}Nachmittag</span>`, tage.map((t) => hundeZelle(t, 'nachmittag')).join(''), 'hunde'));
   }
-  zeilen.push(zeile('<img src="bilder/kia.png" alt="Kia PV5" class="autobild">', tage.map((t) => autoZelle(t, 'kia')).join(''), 'autos'));
+  // RAV zuerst: das Auto der Eltern steht oben (Wunsch Manuel 18.10.2026).
   zeilen.push(zeile('<img src="bilder/rav.png" alt="Toyota RAV" class="autobild">', tage.map((t) => autoZelle(t, 'rav')).join(''), 'autos'));
+  zeilen.push(zeile('<img src="bilder/kia.png" alt="Kia PV5" class="autobild">', tage.map((t) => autoZelle(t, 'kia')).join(''), 'autos'));
   return `<table class="raster"><thead><tr><th></th>${koepfe}</tr></thead><tbody>${zeilen.join('')}</tbody></table>`;
 }

@@ -18,6 +18,11 @@ test('Ansicht alle: fünf Spaltenköpfe Mo bis Fr und die Kia-Zeit', () => {
   assert.ok(h.includes('data-slot='));
 });
 
+test('RAV-Zeile steht über der Kia-Zeile', () => {
+  const h = rasterHtml(tage(), 'autos', '2026-10-19');
+  assert.ok(h.indexOf('bilder/rav.png') < h.indexOf('bilder/kia.png'));
+});
+
 test('Ansicht autos: keine Hundezellen', () => {
   assert.ok(!rasterHtml(tage(), 'autos', '2026-10-19').includes('data-slot='));
 });

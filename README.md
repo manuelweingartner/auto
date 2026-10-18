@@ -23,8 +23,9 @@ unter `___PRIVAT\Auto-Hunde`.
 - Autowechsel: die Zelle des anderen Autos tippen, Speichern (zwei Tipps), die
   Zeiten bleiben.
 - Zahnrad oben rechts: eigener Name für das Protokoll, Link zur Seite kopieren,
-  Kalender-Abos (iPhone-Link, Android-Link, Adresse kopieren), Änderungsprotokoll
-  (wer hat wann was geändert; der Name kommt vom jeweiligen Gerät).
+  drei Kalender-Abos (zwei für Cozi zum Kopieren, eines für die Eltern zum
+  Abonnieren am iPhone), Änderungsprotokoll (wer hat wann was geändert; der
+  Name kommt vom jeweiligen Gerät).
 - Normalfall: Manuel geht beide Runden. Ist Manuel dann weg, schlägt die Seite
   Svenja vor. Die Seite rechnet dafür intern mit den üblichen Zeiten (Manuel
   06-07 und 16-17, Svenja 08-09), zeigt aber nirgends Uhrzeiten für Hunderunden,
@@ -47,38 +48,37 @@ unter `___PRIVAT\Auto-Hunde`.
 
 ## Kalender-Abo (Cozi, Outlook)
 
-Eine GitHub Action schreibt alle 10 Minuten vier ICS-Dateien in ein geheimes
-Gist. Die Adressen zeigt das Zahnrad auf der Seite; die Basis steht in
-`.secrets/abo-url.txt` und in Firestore unter `h/<geheim>/meta/abo`.
+Eine GitHub Action schreibt alle 10 Minuten drei ICS-Dateien in ein geheimes
+Gist. Das Zahnrad auf der Seite zeigt genau drei Zeilen (Entscheid 18.10.2026,
+vorher waren es vier Kalender mit je drei Links, zu viel zum Kopieren); die
+Basis steht in `.secrets/abo-url.txt` und in Firestore unter
+`h/<geheim>/meta/abo`.
 
-- `auto-hunde-hunde.ics` («Hunde Svenja», für Cozi): nur Svenjas Hunderunden
-  als Ganztagestermin «Hunde: Svenja (Morgen und Nachmittag)», keine
+- `auto-hunde-hunde.ics` («Hunde Svenja», Cozi): nur Svenjas Hunderunden als
+  Ganztagestermin «Hunde: Svenja (Morgen und Nachmittag)», keine
   Abwesenheiten. In Cozi als Kalender von Svenja eintragen, dann steht jede
   neue oder verschobene Runde automatisch bei ihr.
-- `auto-hunde-manuel.ics` («Auto Manuel», für Cozi): nur Manuels Abwesenheiten
+- `auto-hunde-manuel.ics` («Auto Manuel», Cozi): nur Manuels Abwesenheiten
   («Manuel weg 07-22 (Kia)», «Manuel weg (RAV)», «Manuel weg (Auto offen)»),
   keine Hunderunden. In Cozi als Kalender von Manuel eintragen. Cozi ordnet
   ein Abo als Ganzes einer Person zu, darum pro Person ein eigener Kalender.
-- `auto-hunde.ics` («Autos und Hunde», für Outlook): beides in einem. Runden
-  von Manuel stehen in keinem Abo.
-- `auto-hunde-rav.ics` («nur RAV», für die Eltern): nur Tage, an denen der RAV
+- `auto-hunde-rav.ics` («nur RAV», Eltern, iPhone): nur Tage, an denen der RAV
   weg ist. Kein Kia, keine Hunde, und Tage mit noch offenem Auto erscheinen erst,
   sobald der RAV festgelegt ist (Entscheid 18.10.2026).
 
+Runden von Manuel stehen in keinem Abo. Einen Sammelkalender (Outlook) und
+Android-Links gibt es seit 18.10.2026 nicht mehr.
+
 Einrichten:
-- **iPhone (Eltern, Svenja):** im Zahnrad «iPhone: abonnieren» tippen, Safari
-  fragt «Kalender abonnieren», bestätigen. Der Kalender erscheint in der
-  Kalender-App und wird von iOS selbst aktualisiert.
-- **Android:** «Android: Google Kalender» öffnet calendar.google.com mit der
-  Adresse; dort «Hinzufügen». In der Google-Kalender-App danach unter
-  Einstellungen den neuen Kalender einblenden.
-- **Cozi:** Einstellungen, «Connected Calendars», «Add a calendar from a URL»,
-  zweimal: Adresse von «Hunde Svenja» mit Familienmitglied Svenja, Adresse von
-  «Auto Manuel» mit Familienmitglied Manuel. Cozi zeigt die Einträge nur
+- **Cozi (Manuel):** im Zahnrad bei «Cozi: Hunde Svenja» und «Cozi: Auto
+  Manuel» je «Adresse kopieren». In Cozi: Einstellungen, «Connected
+  Calendars», «Add a calendar from a URL», Adresse einfügen, als
+  Familienmitglied Svenja bzw. Manuel wählen. Cozi zeigt die Einträge nur
   lesbar und aktualisiert laut Cozi-Hilfe etwa stündlich.
-- **Outlook:** Kalender, «Kalender hinzufügen», «Aus dem Internet abonnieren»,
-  Adresse einfügen. Nur für Manuel sichtbar, ohne Wirkung auf die
-  Verfügbarkeit.
+- **iPhone (Eltern):** im Zahnrad bei «Eltern: nur RAV» auf «iPhone:
+  abonnieren» tippen, Safari fragt «Kalender abonnieren», bestätigen. Der
+  Kalender erscheint in der Kalender-App und wird von iOS selbst
+  aktualisiert.
 
 Verzögerung: GitHub liefert die Raw-Adresse bis zu 5 Minuten aus dem Cache, die
 Action läuft alle 10 Minuten, dazu kommt das Abfrage-Intervall des Kalenders
