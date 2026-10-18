@@ -49,7 +49,8 @@ Gist. Die Adressen zeigt das Zahnrad auf der Seite; die Basis steht in
   07-22 (Kia)», «Manuel weg (RAV)» ganztägig, und «Hunde: Svenja» für Runden,
   die Svenja geht. Runden von Manuel stehen nicht im Abo.
 - `auto-hunde-rav.ics` («nur RAV», für die Eltern): nur Tage, an denen der RAV
-  weg oder das Auto noch offen ist. Kein Kia, keine Hunde.
+  weg ist. Kein Kia, keine Hunde, und Tage mit noch offenem Auto erscheinen erst,
+  sobald der RAV festgelegt ist (Entscheid 18.10.2026).
 
 Einrichten:
 - **iPhone (Eltern, Svenja):** im Zahnrad «iPhone: abonnieren» tippen, Safari

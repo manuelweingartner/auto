@@ -132,7 +132,7 @@ export function blattEinstellungen(opts, onName, onClose) {
   const el = document.getElementById('blatt');
   const abo = opts.links
     ? `<section class="abschnitt"><h3>Kalender «Autos und Hunde»</h3><p class="feld">Für Svenja, Cozi und Outlook.</p>${linkZeile(opts.links.alle)}</section>
-       <section class="abschnitt"><h3>Kalender «nur RAV»</h3><p class="feld">Für die Eltern: nur Tage, an denen der RAV weg oder das Auto noch offen ist.</p>${linkZeile(opts.links.rav)}</section>`
+       <section class="abschnitt"><h3>Kalender «nur RAV»</h3><p class="feld">Für die Eltern: nur Tage, an denen der RAV weg ist.</p>${linkZeile(opts.links.rav)}</section>`
     : '<p class="feld">Abo-Adresse ist nicht hinterlegt.</p>';
   el.innerHTML = `
     <form method="dialog" class="blattinhalt einstellungen">

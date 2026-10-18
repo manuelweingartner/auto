@@ -45,13 +45,13 @@ const kopf = (name) => [
   'END:VTIMEZONE',
 ];
 
-/** nurRav: Kalender für die Eltern. Nur Tage, an denen der RAV weg oder das Auto noch offen ist;
- *  kein Kia, kein «kein Auto», keine Hunderunden. */
+/** nurRav: Kalender für die Eltern. Nur Tage, an denen der RAV weg ist; kein Kia,
+ *  kein offenes Auto (Entscheid Manuel 18.10.2026), kein «kein Auto», keine Hunderunden. */
 export function baueIcs(tage, jetzt, { nurRav = false } = {}) {
   const zeilen = kopf(nurRav ? 'Auto-Hunde RAV' : 'Auto-Hunde');
   for (const t of tage) {
     const a = t.abwesend;
-    if (a && (!nurRav || a.auto === 'rav' || a.auto === 'offen')) {
+    if (a && (!nurRav || a.auto === 'rav')) {
       zeilen.push(...termin({
         uid: `${t.datum}-abwesend`, titel: titelAbwesend(a), datum: t.datum,
         von: a.von, bis: a.bis, ganztag: a.von == null,
