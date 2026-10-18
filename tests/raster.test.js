@@ -64,10 +64,18 @@ test('Hunderunde zeigt nur die Person, nie eine Uhrzeit; Zeilen sind als Hunde b
   assert.ok(!h.includes('hunde.png'));
 });
 
+test('Weg ohne Auto (Zug) zeigt ohne Auto 07-17 in beiden Autozeilen, ganztägig nur ohne Auto', () => {
+  const t = loeseTag('2026-10-23', { abwesend: { auto: 'keines', von: 7, bis: 17 } });
+  const h = rasterHtml([t], 'autos', '2026-10-19');
+  assert.equal((h.match(/class="auto keines"[^>]*>ohne Auto <span class="z">07-17<\/span></g) || []).length, 2);
+  const g = rasterHtml([loeseTag('2026-10-23', { abwesend: { auto: 'keines', von: null, bis: null } })], 'autos', '2026-10-19');
+  assert.equal((g.match(/class="auto keines"[^>]*>ohne Auto</g) || []).length, 2);
+});
+
 test('Mittwoch mit Zeit und offenem Auto zeigt offen 09-15 in beiden Autozeilen', () => {
   const t = loeseTag('2026-10-21', { abwesend: { auto: 'offen', von: 9, bis: 15 } });
   const h = rasterHtml([t], 'alle', '2026-10-19');
-  assert.equal((h.match(/class="auto offen"[^>]*>offen 09-15</g) || []).length, 2);
+  assert.equal((h.match(/class="auto offen"[^>]*>offen <span class="z">09-15<\/span></g) || []).length, 2);
 });
 
 test('Hundezelle schreibt Person und Zeit escaped', () => {

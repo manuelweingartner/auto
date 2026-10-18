@@ -25,10 +25,15 @@ function autoZelle(t, auto) {
   const a = t.abwesend;
   let inhalt = '';
   if (a && a.auto === auto) inhalt = a.von == null ? 'ganzer Tag' : zeitText(a.von, a.bis);
-  else if (a && a.auto === 'offen') inhalt = a.von == null ? 'offen' : `offen ${zeitText(a.von, a.bis)}`;
+  // «offen» und «kein Auto» (Zug) stehen in beiden Autozeilen, sonst wäre die Abwesenheit unsichtbar.
+  // Die Zeit dahinter in einem Span, der nicht am Bindestrich umbricht («offen 07-» / «17» sah schlecht aus).
+  else if (a && (a.auto === 'offen' || a.auto === 'keines')) {
+    const wort = a.auto === 'offen' ? 'offen' : 'ohne Auto';
+    inhalt = a.von == null ? wort : `${wort} <span class="z">${zeitText(a.von, a.bis)}</span>`;
+  }
   // Leere Kästchen sind leicht ausgegraut, damit die belegten herausstechen.
-  const klasse = a && a.auto === 'offen' ? 'auto offen' : `auto ${auto}${inhalt ? '' : ' leer'}`;
-  return `<td><button type="button" class="${klasse}" data-tag="${t.datum}" data-auto="${auto}">${esc(inhalt)}</button></td>`;
+  const klasse = a && (a.auto === 'offen' || a.auto === 'keines') ? `auto ${a.auto}` : `auto ${auto}${inhalt ? '' : ' leer'}`;
+  return `<td><button type="button" class="${klasse}" data-tag="${t.datum}" data-auto="${auto}">${inhalt}</button></td>`;
 }
 
 function zeile(label, zellen, klasse = '') {

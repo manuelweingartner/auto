@@ -79,7 +79,9 @@ button:focus-visible, select:focus-visible { outline: 2px solid var(--manuel); o
 .auto { font-size: 12px; font-weight: 600; padding: 2px; }
 .auto.kia { color: var(--kia); }
 .auto.rav { color: var(--rav); }
-.auto.offen { color: var(--muted); font-weight: 400; font-style: italic; }
+.auto.offen, .auto.keines { color: var(--muted); font-weight: 400; font-style: italic; }
+/* Der Kasten ist eine Flex-Spalte: Wort oben, Zeit darunter, nie «07-» / «17». */
+.auto .z { white-space: nowrap; }
 .auto.leer { background: rgba(0, 0, 0, .04); }
 @media (prefers-color-scheme: dark) { .auto.leer { background: rgba(255, 255, 255, .05); } }
 .autos td { height: 54px; }

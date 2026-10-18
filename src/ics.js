@@ -1,7 +1,7 @@
 // ICS-Abo aus gelösten Tagen. Zeiten als Wanduhrzeit mit TZID, nie über Millisekunden gerechnet.
 import { datumAus, tagSchluessel } from './regeln.js';
 
-const AUTO_NAME = { kia: 'Kia', rav: 'RAV', offen: 'Auto offen' };
+const AUTO_NAME = { kia: 'Kia', rav: 'RAV', offen: 'Auto offen', keines: 'ohne Auto' };
 const zweistellig = (n) => String(n).padStart(2, '0');
 const kompakt = (schluessel) => schluessel.replaceAll('-', '');
 

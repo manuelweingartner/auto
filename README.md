@@ -19,7 +19,9 @@ unter `___PRIVAT\Auto-Hunde`.
   noch offen oder kein Auto, ganzer Tag oder von-bis in vollen Stunden. «Noch
   offen» heisst: Manuel ist weg, das Auto wird später festgelegt; die Seite
   zeigt «offen» in beiden Autozeilen, der Eltern-Kalender zeigt nichts, der
-  Cozi-Kalender «Auto Manuel» zeigt «Manuel weg (Auto offen)». «Löschen» setzt
+  Cozi-Kalender «Auto Manuel» zeigt «Manuel weg (Auto offen)». «Kein Auto»
+  (Zug) steht ebenso in beiden Autozeilen als «ohne Auto», im Cozi-Kalender
+  als «Manuel weg 07-17 (ohne Auto)», bei den Eltern nicht. «Löschen» setzt
   den Tag auf Normalfall zurück.
 - Tippen auf M oder S: die andere Person ist vorgewählt, Speichern genügt
   (zwei Tipps). Startstunde änderbar.

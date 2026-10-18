@@ -43,8 +43,7 @@ test('Svenja-Runden als ein Ganztagestermin pro Tag ohne Uhrzeit, keine Manuel-R
 test('Ende 24 Uhr wird 00:00 des Folgetags', () => {
   const t = loeseTag('2026-10-23', { abwesend: { auto: 'keines', von: 7, bis: 24 } });
   const s = baueIcs([t], JETZT);
-  assert.ok(s.includes('SUMMARY:Manuel weg 07-24'));
-  assert.ok(!s.includes('SUMMARY:Manuel weg 07-24 ('));
+  assert.ok(s.includes('SUMMARY:Manuel weg 07-24 (ohne Auto)'));
   assert.ok(s.includes('DTEND;TZID=Europe/Zurich:20261024T000000'));
 });
 
