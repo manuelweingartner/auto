@@ -58,10 +58,11 @@ Basis steht in `.secrets/abo-url.txt` und in Firestore unter
   Ganztagestermin «Hunde: Svenja (Morgen und Nachmittag)», keine
   Abwesenheiten. In Cozi als Kalender von Svenja eintragen, dann steht jede
   neue oder verschobene Runde automatisch bei ihr.
-- `auto-hunde-manuel.ics` («Auto Manuel», Cozi): nur Manuels Abwesenheiten
-  («Manuel weg 07-22 (Kia)», «Manuel weg (RAV)», «Manuel weg (Auto offen)»),
-  keine Hunderunden. In Cozi als Kalender von Manuel eintragen. Cozi ordnet
-  ein Abo als Ganzes einer Person zu, darum pro Person ein eigener Kalender.
+- `auto-hunde-manuel.ics` («Kia Manuel», Cozi): nur Tage, an denen Manuel mit
+  dem Kia weg ist («Manuel weg 07-22 (Kia)»). Kein RAV, kein offenes Auto
+  (Entscheid 18.10.2026: «RAV egal»), keine Hunderunden. In Cozi als Kalender
+  von Manuel eintragen. Cozi ordnet ein Abo als Ganzes einer Person zu, darum
+  pro Person ein eigener Kalender.
 - `auto-hunde-rav.ics` («nur RAV», Eltern, iPhone): nur Tage, an denen der RAV
   weg ist. Kein Kia, keine Hunde, und Tage mit noch offenem Auto erscheinen erst,
   sobald der RAV festgelegt ist (Entscheid 18.10.2026).
@@ -70,7 +71,7 @@ Runden von Manuel stehen in keinem Abo. Einen Sammelkalender (Outlook) und
 Android-Links gibt es seit 18.10.2026 nicht mehr.
 
 Einrichten:
-- **Cozi (Manuel):** im Zahnrad bei «Cozi: Hunde Svenja» und «Cozi: Auto
+- **Cozi (Manuel):** im Zahnrad bei «Cozi: Hunde Svenja» und «Cozi: Kia
   Manuel» je «Adresse kopieren». In Cozi: Einstellungen, «Connected
   Calendars», «Add a calendar from a URL», Adresse einfügen, als
   Familienmitglied Svenja bzw. Manuel wählen. Cozi zeigt die Einträge nur

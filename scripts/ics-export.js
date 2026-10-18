@@ -49,12 +49,12 @@ export function ohneStempel(ics) {
   return ics.split('\r\n').filter((z) => !z.startsWith('DTSTAMP:')).join('\r\n');
 }
 
-/** Die drei Kalenderdateien des Gists: Svenjas Hunderunden und Manuels Abwesenheiten
+/** Die drei Kalenderdateien des Gists: Svenjas Hunderunden und Manuels Kia-Tage
  *  (je ein Cozi-Kalender pro Person) sowie nur RAV für die Eltern. */
 export function dateien(tage, jetzt) {
   return {
     'auto-hunde-hunde.ics': baueIcs(tage, jetzt, { nurHunde: true }),
-    'auto-hunde-manuel.ics': baueIcs(tage, jetzt, { nurManuel: true }),
+    'auto-hunde-manuel.ics': baueIcs(tage, jetzt, { nurKia: true }),
     'auto-hunde-rav.ics': baueIcs(tage, jetzt, { nurRav: true }),
   };
 }

@@ -128,7 +128,7 @@ export function blattEinstellungen(opts, onName, onClose) {
   const el = document.getElementById('blatt');
   const abo = opts.links
     ? `<section class="abschnitt"><h3>Cozi: Hunde Svenja</h3><p class="feld">Svenjas Hunderunden. In Cozi als Kalender von Svenja eintragen.</p>${linkZeile(opts.links.hunde)}</section>
-       <section class="abschnitt"><h3>Cozi: Auto Manuel</h3><p class="feld">Manuels Abwesenheiten mit Auto. In Cozi als Kalender von Manuel eintragen.</p>${linkZeile(opts.links.manuel)}</section>
+       <section class="abschnitt"><h3>Cozi: Kia Manuel</h3><p class="feld">Tage, an denen Manuel mit dem Kia weg ist. In Cozi als Kalender von Manuel eintragen.</p>${linkZeile(opts.links.manuel)}</section>
        <section class="abschnitt"><h3>Eltern: nur RAV</h3><p class="feld">Tage, an denen der RAV weg ist. Am iPhone der Eltern abonnieren.</p>${linkZeile(opts.links.rav, { iphone: true })}</section>`
     : '<p class="feld">Abo-Adresse ist nicht hinterlegt.</p>';
   el.innerHTML = `
