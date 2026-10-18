@@ -35,6 +35,8 @@ body {
 }
 main { max-width: 640px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
 button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+/* Kein Doppeltipp-Zoom und kein grauer Tipp-Blitz auf dem Handy. */
+button, select, input { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
 button:focus-visible, select:focus-visible { outline: 2px solid var(--manuel); outline-offset: 2px; }
 
 .meldung { max-width: 640px; margin: 24px auto; font-size: 17px; }
@@ -50,6 +52,9 @@ button:focus-visible, select:focus-visible { outline: 2px solid var(--manuel); o
 .raster { width: 100%; border-collapse: collapse; table-layout: fixed; font-variant-numeric: tabular-nums; }
 .raster th, .raster td { border-top: 1px solid var(--line); padding: 0; text-align: center; vertical-align: middle; }
 .raster thead th { border-top: 0; }
+/* Feine Trennlinien zwischen den Wochentagen, damit die Autozeilen lesbar zur Spalte gehören. */
+.raster th + th, .raster td + td, .raster tbody th + td { border-left: 1px solid var(--line); }
+.raster.laedt tbody { opacity: .45; }
 .raster col, .raster th:first-child, .raster td:first-child { width: 58px; }
 .raster thead th:first-child { width: 58px; }
 .raster tbody th { text-align: left; font-weight: 400; color: var(--muted); font-size: 12px; padding-right: 4px; }

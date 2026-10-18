@@ -17,10 +17,11 @@ function kopf(t, heute) {
 
 function hundeZelle(t, slot) {
   const r = t[slot];
-  const standard = STANDARD[slot][r.person];
+  const standard = STANDARD[slot][r.person] ?? [null];
   const abweichend = r.von !== standard[0];
-  const zeit = abweichend ? `<span class="zeit">${zeitText(r.von, r.bis)}</span>` : '';
-  return `<td><button type="button" class="runde p${r.person}" data-tag="${t.datum}" data-slot="${slot}">${r.person}${zeit}</button></td>`;
+  const zeit = abweichend ? `<span class="zeit">${esc(zeitText(r.von, r.bis))}</span>` : '';
+  const p = esc(r.person);
+  return `<td><button type="button" class="runde p${p}" data-tag="${t.datum}" data-slot="${slot}">${p}${zeit}</button></td>`;
 }
 
 function autoZelle(t, auto) {

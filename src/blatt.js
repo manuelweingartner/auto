@@ -20,9 +20,11 @@ function wahl(name, werte, aktiv) {
     `<button type="button" data-wert="${w}" aria-pressed="${w === aktiv}">${l}</button>`).join('')}</div>`;
 }
 
-/** Blatt «Manuel weg». onSave(abwesend|null) bei Speichern, null heisst Tag löschen. */
-export function blattAbwesend(tag, onSave, onClose) {
-  const a = tag.abwesend ?? { auto: 'keines', von: 7, bis: 17 };
+/** Blatt «Manuel weg». onSave(abwesend|null) bei Speichern, null heisst Tag löschen.
+ *  vorwahl: das Auto der angetippten Zelle, wenn noch keines gewählt ist. */
+export function blattAbwesend(tag, onSave, onClose, vorwahl) {
+  const a = { ...(tag.abwesend ?? { auto: 'keines', von: 7, bis: 17 }) };
+  if (vorwahl && (!tag.abwesend || a.auto === 'offen')) a.auto = vorwahl;
   const ganz = a.von == null;
   const el = document.getElementById('blatt');
   el.innerHTML = `
@@ -55,7 +57,8 @@ export function blattAbwesend(tag, onSave, onClose) {
     el.querySelector('#fehler').textContent = f ?? '';
     el.querySelector('#speichern').disabled = !!f;
   };
-  el.addEventListener('click', (e) => {
+  // Listener am Formular, nicht am Dialog: das Formular wird bei jedem Öffnen neu gebaut.
+  el.querySelector('form').addEventListener('click', (e) => {
     const b = e.target.closest('[data-wert]');
     if (b) {
       b.parentElement.querySelectorAll('button').forEach((x) => x.setAttribute('aria-pressed', x === b));
@@ -66,8 +69,11 @@ export function blattAbwesend(tag, onSave, onClose) {
     el.querySelector('.zeiten').hidden = e.target.checked;
     pruefe();
   });
-  el.querySelector('#von').addEventListener('change', pruefe);
-  el.querySelector('#bis').addEventListener('change', pruefe);
+  // Ende rutscht mit, wenn der Anfang darüber gesetzt wird, und umgekehrt.
+  const von = el.querySelector('#von');
+  const bis = el.querySelector('#bis');
+  von.addEventListener('change', () => { if (Number(bis.value) <= Number(von.value)) bis.value = Math.min(24, Number(von.value) + 1); pruefe(); });
+  bis.addEventListener('change', () => { if (Number(bis.value) <= Number(von.value)) von.value = Math.max(0, Number(bis.value) - 1); pruefe(); });
   el.querySelector('#speichern').addEventListener('click', () => { if (!pruefeAbwesenheit(lese())) onSave(lese()); });
   el.querySelector('#loeschen').addEventListener('click', () => onSave(null));
   el.querySelector('#abbrechen').addEventListener('click', onClose);
@@ -92,7 +98,7 @@ export function blattRunde(tag, slot, onSave, onClose) {
         <button type="button" id="speichern" class="laut">Speichern</button>
       </div>
     </form>`;
-  el.addEventListener('click', (e) => {
+  el.querySelector('form').addEventListener('click', (e) => {
     const b = e.target.closest('[data-wert]');
     if (!b) return;
     b.parentElement.querySelectorAll('button').forEach((x) => x.setAttribute('aria-pressed', x === b));

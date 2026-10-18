@@ -50,8 +50,17 @@ function runde(person, slot, quelle) {
   return { person, von, bis, quelle };
 }
 
+// Ein verbogenes Dokument (falsche Person, keine Stunde) darf die Woche nicht leeren.
+function gueltigeRunde(slot, r) {
+  return !!r && r.quelle === 'hand' && !!STANDARD[slot][r.person] && Number.isInteger(r.von);
+}
+
+function gueltigeAbwesenheit(a) {
+  return !!a && ['kia', 'rav', 'keines', 'offen'].includes(a.auto) && !pruefeAbwesenheit(a);
+}
+
 function loeseRunde(slot, abwesend, gespeichert) {
-  if (gespeichert && gespeichert.quelle === 'hand') return { ...gespeichert };
+  if (gueltigeRunde(slot, gespeichert)) return { ...gespeichert, bis: gespeichert.von + 1 };
   if (ueberschneidet(abwesend, STANDARD[slot].M)) return runde('S', slot, 'vorschlag');
   return runde('M', slot, 'standard');
 }
@@ -61,7 +70,7 @@ export function loeseTag(datum, doc) {
   // «abwesend: null» ist dagegen ein bewusstes Löschen.
   let abwesend;
   if (doc === undefined || !('abwesend' in doc)) abwesend = istMittwoch(datum) ? { ...MITTWOCH_VORBELEGUNG } : null;
-  else abwesend = doc.abwesend ?? null;
+  else abwesend = gueltigeAbwesenheit(doc.abwesend) ? doc.abwesend : null;
   return {
     datum,
     abwesend,

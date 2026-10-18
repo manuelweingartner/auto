@@ -45,3 +45,12 @@ test('Mittwoch mit Zeit und offenem Auto zeigt offen 09-15 in beiden Autozeilen'
   const h = rasterHtml([t], 'alle', '2026-10-19');
   assert.equal((h.match(/class="auto offen"[^>]*>offen 09-15</g) || []).length, 2);
 });
+
+test('Hundezelle schreibt Person und Zeit escaped', () => {
+  const t = { datum: '2026-10-23', abwesend: null,
+    morgen: { person: '<b>', von: 5, bis: 6, quelle: 'hand' },
+    nachmittag: { person: 'M', von: 16, bis: 17, quelle: 'standard' } };
+  const h = rasterHtml([t], 'alle', '2026-10-19');
+  assert.ok(!h.includes('<b>'));
+  assert.ok(h.includes('&lt;b&gt;'));
+});

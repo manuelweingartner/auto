@@ -63,3 +63,16 @@ test('Mittwoch mit Handrunde, aber ohne abwesend-Feld: Vorbelegung bleibt', () =
   assert.deepEqual(t.abwesend, { auto: 'offen', von: null, bis: null });
   assert.deepEqual([t.morgen.person, t.nachmittag.person, t.nachmittag.quelle], ['M', 'S', 'vorschlag']);
 });
+
+test('kaputte Handrunde (unbekannte Person oder keine Stunde) fällt auf den Standard zurück', () => {
+  const a = loeseTag('2026-10-23', { morgen: { person: 'X', von: 5, bis: 6, quelle: 'hand' } });
+  assert.deepEqual([a.morgen.person, a.morgen.von, a.morgen.quelle], ['M', 6, 'standard']);
+  const b = loeseTag('2026-10-23', { nachmittag: { person: 'S', von: 'abends', quelle: 'hand' } });
+  assert.deepEqual([b.nachmittag.person, b.nachmittag.von], ['M', 16]);
+});
+
+test('kaputte Abwesenheit (unbekanntes Auto) zählt als keine', () => {
+  const t = loeseTag('2026-10-23', { abwesend: { auto: 'velo', von: 7, bis: 22 } });
+  assert.equal(t.abwesend, null);
+  assert.equal(t.nachmittag.person, 'M');
+});

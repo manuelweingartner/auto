@@ -1,5 +1,5 @@
 // Start, Geheimnis, Ansicht, Woche, Verdrahtung von Raster, Blättern und Speicher.
-import { loeseTag, wocheAb, tagSchluessel, docMitAbwesenheit, docMitRunde } from './regeln.js';
+import { loeseTag, wocheAb, tagSchluessel, datumAus, docMitAbwesenheit, docMitRunde } from './regeln.js';
 import { rasterHtml } from './raster.js';
 import { blattAbwesend, blattRunde } from './blatt.js';
 import { beobachteWoche, schreibeTeil, loescheTag } from './speicher.js';
@@ -19,7 +19,8 @@ const state = {
   geheim: geheimnis(),
   ansicht: lesSpeicher('auto-hunde-ansicht') === 'autos' ? 'autos' : 'alle',
   start: new Date(),
-  docs: {},
+  heute: tagSchluessel(new Date()),
+  docs: null, // null: noch kein Snapshot für diese Woche
   stop: null,
 };
 
@@ -33,18 +34,24 @@ function wochenTitel(datums) {
 
 function zeichne() {
   const datums = wocheAb(state.start);
-  const tage = datums.map((d) => loeseTag(d, state.docs[d]));
+  const docs = state.docs ?? {};
+  const tage = datums.map((d) => loeseTag(d, docs[d]));
   $('#woche').textContent = wochenTitel(datums);
-  $('#raster').innerHTML = rasterHtml(tage, state.ansicht, tagSchluessel(new Date()));
+  $('#raster').innerHTML = rasterHtml(tage, state.ansicht, state.heute);
+  $('#raster .raster').classList.toggle('laedt', state.docs === null);
   document.querySelectorAll('[data-ansicht]').forEach((b) => b.setAttribute('aria-pressed', b.dataset.ansicht === state.ansicht));
 }
 
 function abonniere() {
   if (state.stop) state.stop();
   const datums = wocheAb(state.start);
-  state.docs = {};
+  state.docs = null;
   zeichne();
-  state.stop = beobachteWoche(state.geheim, datums, (docs) => { state.docs = docs; zeichne(); }, (e) => {
+  state.stop = beobachteWoche(state.geheim, datums, (docs) => {
+    state.docs = docs;
+    $('#meldung').hidden = true;
+    zeichne();
+  }, (e) => {
     console.error(e);
     $('#meldung').textContent = 'Keine Verbindung zum Speicher. Ist der Link vollständig?';
     $('#meldung').hidden = false;
@@ -86,8 +93,17 @@ function start() {
     if (b.dataset.slot) {
       blattRunde(tagVon(datum), b.dataset.slot, (person, von) => speichere(schreibeTeil(state.geheim, datum, docMitRunde(b.dataset.slot, person, von))), schliesse);
     } else {
-      blattAbwesend(tagVon(datum), (a) => speichere(a === null ? loescheTag(state.geheim, datum) : schreibeTeil(state.geheim, datum, docMitAbwesenheit(a))), schliesse);
+      blattAbwesend(tagVon(datum), (a) => speichere(a === null ? loescheTag(state.geheim, datum) : schreibeTeil(state.geheim, datum, docMitAbwesenheit(a))), schliesse, b.dataset.auto);
     }
+  });
+  // Seite blieb über Mitternacht offen (Startbildschirm): Heute-Markierung und Startwoche nachziehen.
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState !== 'visible') return;
+    const heute = tagSchluessel(new Date());
+    if (heute === state.heute) return;
+    const zeigteHeute = wocheAb(state.start)[0] === wocheAb(datumAus(state.heute))[0];
+    state.heute = heute;
+    if (zeigteHeute) { state.start = new Date(); abonniere(); } else zeichne();
   });
   abonniere();
 }
