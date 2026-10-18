@@ -32,7 +32,7 @@ export function blattAbwesend(tag, onSave, onClose, vorwahl) {
     <form method="dialog" class="blattinhalt">
       <h2>${titel(tag.datum)}</h2>
       <p class="feld">Manuel weg mit</p>
-      ${wahl('auto', [['kia', 'Kia'], ['rav', 'RAV'], ['keines', 'kein Auto']], a.auto)}
+      ${wahl('auto', [['kia', 'Kia'], ['rav', 'RAV'], ['offen', 'noch offen'], ['keines', 'kein Auto']], a.auto)}
       <label class="zeile"><input type="checkbox" id="ganz"${ganz ? ' checked' : ''}> ganzer Tag</label>
       <div class="zeile zeiten"${ganz ? ' hidden' : ''}>
         <label>von ${stunden('von', 0, 23, ganz ? 7 : a.von)}</label>
@@ -47,7 +47,7 @@ export function blattAbwesend(tag, onSave, onClose, vorwahl) {
       </div>
     </form>`;
   const lese = () => {
-    // Kein Knopf gedrückt heisst: Auto bleibt offen (Mittwoch-Vorbelegung), nicht «kein Auto».
+    // «noch offen» ist wählbar (Manuel weg, Auto später); kein Knopf gedrückt heisst ebenfalls offen.
     const gedrueckt = el.querySelector('[data-wahl="auto"] [aria-pressed="true"]');
     const auto = gedrueckt ? gedrueckt.dataset.wert : 'offen';
     if (el.querySelector('#ganz').checked) return { auto, von: null, bis: null };

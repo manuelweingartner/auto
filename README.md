@@ -15,9 +15,12 @@ unter `___PRIVAT\Auto-Hunde`.
 
 ## Bedienung
 
-- Tippen auf den Wochentag oder eine Auto-Zelle: «Manuel weg mit» Kia, RAV oder
-  kein Auto, ganzer Tag oder von-bis in vollen Stunden. «Löschen» setzt den Tag
-  auf Normalfall zurück.
+- Tippen auf den Wochentag oder eine Auto-Zelle: «Manuel weg mit» Kia, RAV,
+  noch offen oder kein Auto, ganzer Tag oder von-bis in vollen Stunden. «Noch
+  offen» heisst: Manuel ist weg, das Auto wird später festgelegt; die Seite
+  zeigt «offen» in beiden Autozeilen, der Eltern-Kalender zeigt nichts, der
+  Cozi-Kalender «Auto Manuel» zeigt «Manuel weg (Auto offen)». «Löschen» setzt
+  den Tag auf Normalfall zurück.
 - Tippen auf M oder S: die andere Person ist vorgewählt, Speichern genügt
   (zwei Tipps). Startstunde änderbar.
 - Autowechsel: die Zelle des anderen Autos tippen, Speichern (zwei Tipps), die
