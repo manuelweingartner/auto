@@ -1,5 +1,5 @@
 // Darstellung der Woche als Tabelle. Reine Funktion, ohne DOM, testbar in Node.
-import { STANDARD, datumAus } from './regeln.js';
+import { datumAus } from './regeln.js';
 
 const KURZ = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
 const zweistellig = (n) => String(n).padStart(2, '0');
@@ -15,13 +15,10 @@ function kopf(t, heute) {
   return `<th class="${klasse}" data-datum="${t.datum}" scope="col"><button type="button" class="tagknopf" data-tag="${t.datum}"><span class="wt">${KURZ[(d.getDay() + 6) % 7]}</span><span class="dt">${d.getDate()}.</span></button></th>`;
 }
 
+// Nur die Person. Die Uhrzeiten der Runden sind Beiwerk und werden nirgends gezeigt.
 function hundeZelle(t, slot) {
-  const r = t[slot];
-  const standard = STANDARD[slot][r.person] ?? [null];
-  const abweichend = r.von !== standard[0];
-  const zeit = abweichend ? `<span class="zeit">${esc(zeitText(r.von, r.bis))}</span>` : '';
-  const p = esc(r.person);
-  return `<td><button type="button" class="runde p${p}" data-tag="${t.datum}" data-slot="${slot}">${p}${zeit}</button></td>`;
+  const p = esc(t[slot].person);
+  return `<td><button type="button" class="runde p${p}" data-tag="${t.datum}" data-slot="${slot}">${p}</button></td>`;
 }
 
 function autoZelle(t, auto) {
@@ -41,8 +38,8 @@ export function rasterHtml(tage, ansicht, heute) {
   const koepfe = tage.map((t) => kopf(t, heute)).join('');
   const zeilen = [];
   if (ansicht === 'alle') {
-    zeilen.push(zeile('<span class="rl">Morgen</span>', tage.map((t) => hundeZelle(t, 'morgen')).join(''), 'hunde'));
-    zeilen.push(zeile('<span class="rl">Nach&shy;mittag</span>', tage.map((t) => hundeZelle(t, 'nachmittag')).join(''), 'hunde'));
+    zeilen.push(zeile('<span class="rl"><small>Hunde</small>Morgen</span>', tage.map((t) => hundeZelle(t, 'morgen')).join(''), 'hunde'));
+    zeilen.push(zeile('<span class="rl"><small>Hunde</small>Nach&shy;mittag</span>', tage.map((t) => hundeZelle(t, 'nachmittag')).join(''), 'hunde'));
   }
   zeilen.push(zeile('<img src="bilder/kia.png" alt="Kia PV5" class="autobild">', tage.map((t) => autoZelle(t, 'kia')).join(''), 'autos'));
   zeilen.push(zeile('<img src="bilder/rav.png" alt="Toyota RAV" class="autobild">', tage.map((t) => autoZelle(t, 'rav')).join(''), 'autos'));

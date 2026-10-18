@@ -11,8 +11,8 @@ const JETZT = new Date(Date.UTC(2026, 9, 18, 10, 0, 0));
 const woche = () => wocheAb(new Date(2026, 9, 19)).map((d) => loeseTag(d, DOCS[d]));
 const ics = () => baueIcs(woche(), JETZT);
 
-test('Woche 19.10.: 6 Termine (Di weg, Mi ganztägig, Mi Hunde x2, Do weg, Do Hunde)', () => {
-  assert.equal(ics().match(/BEGIN:VEVENT/g).length, 6);
+test('Woche 19.10.: 5 Termine (Di weg, Mi ganztägig, Mi Hunde, Do weg, Do Hunde)', () => {
+  assert.equal(ics().match(/BEGIN:VEVENT/g).length, 5);
 });
 
 test('Abwesenheit mit Zeit als Termin mit Ortszeit', () => {
@@ -29,10 +29,14 @@ test('Ganzer Tag mit offenem Auto als Ganztagestermin', () => {
   assert.ok(s.includes('DTEND;VALUE=DATE:20261022'));
 });
 
-test('Svenja-Runde morgens 8-9 als Termin, keine Manuel-Runden', () => {
+test('Svenja-Runden als ein Ganztagestermin pro Tag ohne Uhrzeit, keine Manuel-Runden', () => {
   const s = ics();
-  assert.ok(s.includes('SUMMARY:Hunde: Svenja'));
-  assert.ok(s.includes('DTSTART;TZID=Europe/Zurich:20261021T080000'));
+  // Mi 21.10.: beide Runden Svenja. Do 22.10.: Manuel weg 07-22, nur der Nachmittag geht an Svenja.
+  assert.ok(s.includes('DTSTART;VALUE=DATE:20261021\r\nDTEND;VALUE=DATE:20261022\r\nSUMMARY:Hunde: Svenja (Morgen und Nachmittag)'));
+  assert.ok(s.includes('DTSTART;VALUE=DATE:20261022\r\nDTEND;VALUE=DATE:20261023\r\nSUMMARY:Hunde: Svenja (Nachmittag)'));
+  // jeder Hunde-Termin ist ganztägig, keiner trägt eine Uhrzeit
+  assert.equal((s.match(/-hunde@auto-hunde\r\nDTSTAMP:[^\r]*\r\nDTSTART;VALUE=DATE/g) || []).length, 2);
+  assert.equal((s.match(/-hunde@auto-hunde\r\nDTSTAMP:[^\r]*\r\nDTSTART;TZID/g) || []).length, 0);
   assert.ok(!s.includes('Hunde: Manuel'));
 });
 
@@ -55,7 +59,7 @@ test('Kopf, stabile UIDs, DTSTAMP in UTC, CRLF', () => {
   assert.ok(s.includes('X-WR-CALNAME:Auto-Hunde'));
   assert.ok(s.includes('BEGIN:VTIMEZONE'));
   assert.ok(s.includes('UID:2026-10-22-abwesend@auto-hunde'));
-  assert.ok(s.includes('UID:2026-10-21-morgen@auto-hunde'));
+  assert.ok(s.includes('UID:2026-10-21-hunde@auto-hunde'));
   assert.ok(s.includes('DTSTAMP:20261018T100000Z'));
   assert.ok(s.endsWith('END:VCALENDAR\r\n'));
   assert.ok(s.split('\r\n').every((z) => !z.includes('\n')));

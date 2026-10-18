@@ -38,7 +38,8 @@ export function startDatum(jetzt) {
 export function wocheAb(d) {
   const montag = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 12);
   montag.setDate(montag.getDate() - ((montag.getDay() + 6) % 7));
-  return Array.from({ length: 7 }, (_, i) => {
+  // Nur Mo bis Fr: am Wochenende gibt es keine Koordination (Entscheid 18.10.2026).
+  return Array.from({ length: 5 }, (_, i) => {
     const x = new Date(montag);
     x.setDate(montag.getDate() + i);
     return tagSchluessel(x);

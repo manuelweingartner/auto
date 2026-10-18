@@ -9,9 +9,11 @@ const DOCS = {
 };
 const tage = () => wocheAb(new Date(2026, 9, 19)).map((d) => loeseTag(d, DOCS[d]));
 
-test('Ansicht alle: sieben Spaltenköpfe und die Kia-Zeit', () => {
+test('Ansicht alle: fünf Spaltenköpfe Mo bis Fr und die Kia-Zeit', () => {
   const h = rasterHtml(tage(), 'alle', '2026-10-19');
-  for (const k of ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So']) assert.ok(h.includes(`>${k}<`), k);
+  for (const k of ['Mo', 'Di', 'Mi', 'Do', 'Fr']) assert.ok(h.includes(`>${k}<`), k);
+  for (const k of ['Sa', 'So']) assert.ok(!h.includes(`>${k}<`), k);
+  assert.equal((h.match(/<th class="tag[^"]*" data-datum=/g) || []).length, 5);
   assert.ok(h.includes('07-22'));
   assert.ok(h.includes('data-slot='));
 });
@@ -30,14 +32,18 @@ test('heutige Spalte ist markiert', () => {
   assert.doesNotMatch(h, /class="tag heute"[^>]*data-datum="2026-10-20"/);
 });
 
-test('Svenja-Runde als S, abweichende Zeit sichtbar', () => {
+test('Hunderunde zeigt nur die Person, nie eine Uhrzeit; Zeilen sind als Hunde beschriftet', () => {
   const t = loeseTag('2026-10-23', {
     abwesend: { auto: 'kia', von: 6, bis: 20 },
     morgen: { person: 'M', von: 5, bis: 6, quelle: 'hand' },
   });
   const h = rasterHtml([t], 'alle', '2026-10-19');
-  assert.ok(h.includes('05-06'));
-  assert.match(h, /data-slot="nachmittag"[^>]*>[\s\S]*?S/);
+  assert.ok(!h.includes('05-06'));
+  assert.ok(!h.includes('16-17'));
+  assert.match(h, /data-slot="morgen"[^>]*>M<\/button>/);
+  assert.match(h, /data-slot="nachmittag"[^>]*>S<\/button>/);
+  assert.match(h, /<th scope="row"><span class="rl"><small>Hunde<\/small>Morgen<\/span>/);
+  assert.match(h, /<small>Hunde<\/small>Nach&shy;mittag/);
 });
 
 test('Mittwoch mit Zeit und offenem Auto zeigt offen 09-15 in beiden Autozeilen', () => {

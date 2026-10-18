@@ -87,15 +87,13 @@ export function blattAbwesend(tag, onSave, onClose, vorwahl) {
 export function blattRunde(tag, slot, onSave, onClose) {
   const r = tag[slot];
   const person = r.person === 'M' ? 'S' : 'M';
-  const von = STANDARD[slot][person][0];
   const el = document.getElementById('blatt');
   const name = slot === 'morgen' ? 'Hunde am Morgen' : 'Hunde am Nachmittag';
   el.innerHTML = `
     <form method="dialog" class="blattinhalt">
       <h2>${titel(tag.datum)}</h2>
-      <p class="feld">${name}, bisher ${r.person === 'M' ? 'Manuel' : 'Svenja'} ${zweistellig(r.von)}-${zweistellig(r.bis)}</p>
+      <p class="feld">${name}, bisher ${r.person === 'M' ? 'Manuel' : 'Svenja'}</p>
       ${wahl('person', [['M', 'Manuel'], ['S', 'Svenja']], person)}
-      <div class="zeile"><label>ab ${stunden('von', 4, 21, von)} Uhr</label></div>
       <div class="knoepfe">
         <span class="platz"></span>
         <button type="button" id="abbrechen" class="leise">Abbrechen</button>
@@ -106,11 +104,11 @@ export function blattRunde(tag, slot, onSave, onClose) {
     const b = e.target.closest('[data-wert]');
     if (!b) return;
     b.parentElement.querySelectorAll('button').forEach((x) => x.setAttribute('aria-pressed', x === b));
-    el.querySelector('#von').value = STANDARD[slot][b.dataset.wert][0];
   });
   el.querySelector('#speichern').addEventListener('click', () => {
     const person = el.querySelector('[data-wahl="person"] [aria-pressed="true"]').dataset.wert;
-    onSave(person, Number(el.querySelector('#von').value));
+    // Startstunde ist die übliche der Person; sie wird gespeichert, aber nirgends angezeigt.
+    onSave(person, STANDARD[slot][person][0]);
   });
   el.querySelector('#abbrechen').addEventListener('click', onClose);
   el.showModal();

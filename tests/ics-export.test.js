@@ -38,11 +38,12 @@ test('ladeDocs folgt nextPageToken und wandelt Firestore-Typen', async () => {
   assert.ok(urls[1].includes('pageToken=weiter'));
 });
 
-test('tageImFenster: 28 Tage zurück, 56 voraus, Mittwoche vorbelegt', () => {
+test('tageImFenster: 28 Tage zurück, 56 voraus, nur Mo bis Fr, Mittwoche vorbelegt', () => {
   const tage = tageImFenster(new Date(2026, 9, 18), {});
-  assert.equal(tage.length, 85);
-  assert.equal(tage[0].datum, '2026-09-20');
-  assert.equal(tage[84].datum, '2026-12-13');
+  assert.equal(tage.length, 60); // 85 Kalendertage (So 20.09. bis So 13.12.) minus 13 Sonntage und 12 Samstage
+  assert.equal(tage[0].datum, '2026-09-21');
+  assert.equal(tage[59].datum, '2026-12-11');
+  assert.ok(tage.every((t) => ![0, 6].includes(new Date(t.datum + 'T12:00').getDay())));
   const mittwoche = tage.filter((t) => new Date(t.datum + 'T12:00').getDay() === 3);
   assert.ok(mittwoche.length >= 12);
   assert.ok(mittwoche.every((t) => t.abwesend?.auto === 'offen'));

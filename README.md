@@ -1,7 +1,8 @@
 # Auto-Hunde
 
-Wochenübersicht für die Familie: wer geht wann mit den Hunden, und wann ist
-welches Auto (Kia PV5, Toyota RAV) weg. Eine Seite, einmal eintragen, alle sehen
+Wochenübersicht Montag bis Freitag für die Familie: wer geht wann mit den
+Hunden, und wann ist welches Auto (Kia PV5, Toyota RAV) weg. Samstag und
+Sonntag gibt es nicht, die Koordination betrifft nur Arbeitstage. Eine Seite, einmal eintragen, alle sehen
 es, Cozi und Outlook holen es als Kalender-Abo.
 
 Seite: `https://manuelweingartner.github.io/auto/#<geheim>`
@@ -24,9 +25,11 @@ unter `___PRIVAT\Auto-Hunde`.
 - Zahnrad oben rechts: eigener Name für das Protokoll, Link zur Seite kopieren,
   Kalender-Abos (iPhone-Link, Android-Link, Adresse kopieren), Änderungsprotokoll
   (wer hat wann was geändert; der Name kommt vom jeweiligen Gerät).
-- Normalfall: Manuel geht beide Runden (6-7 und 16-17 Uhr). Ist Manuel zu
-  diesen Zeiten weg, schlägt die Seite Svenja vor (morgens 8-9 Uhr). Von Hand
-  gesetzte Runden bleiben, auch wenn die Abwesenheit später geändert wird.
+- Normalfall: Manuel geht beide Runden. Ist Manuel dann weg, schlägt die Seite
+  Svenja vor. Die Seite rechnet dafür intern mit den üblichen Zeiten (Manuel
+  06-07 und 16-17, Svenja 08-09), zeigt aber nirgends Uhrzeiten für Hunderunden,
+  auch nicht im Kalender-Abo (Entscheid 18.10.2026). Von Hand gesetzte Runden
+  bleiben, auch wenn die Abwesenheit später geändert wird.
 - Jeder Mittwoch ist vorbelegt: ganzer Tag, Auto «offen», Svenja beide Runden.
 - «Autos» ist die Standardansicht (für die Eltern), «Autos und Hunde» zeigt
   dazu die Runden. Jedes Gerät merkt sich die zuletzt gewählte Ansicht.

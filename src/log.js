@@ -21,7 +21,7 @@ export function logText(datum, aenderung) {
     if (!a) was = 'gelöscht';
     else was = `${AUTO[a.auto] ?? a.auto} ${a.von == null ? 'ganzer Tag' : `${zweistellig(a.von)}-${zweistellig(a.bis)}`}`;
   } else {
-    was = `${SLOT[aenderung.slot]} ${PERSON[aenderung.person] ?? aenderung.person} ${zweistellig(aenderung.von)}-${zweistellig(aenderung.von + 1)}`;
+    was = `Hunde ${SLOT[aenderung.slot]} ${PERSON[aenderung.person] ?? aenderung.person}`;
   }
   return `${tagText(datum)}: ${was}`;
 }

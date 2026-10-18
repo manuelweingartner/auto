@@ -31,7 +31,7 @@ const state = {
 const $ = (s) => document.querySelector(s);
 
 function wochenTitel(datums) {
-  const a = new Date(datums[0] + 'T12:00'); const b = new Date(datums[6] + 'T12:00');
+  const a = new Date(datums[0] + 'T12:00'); const b = new Date(datums[datums.length - 1] + 'T12:00');
   const m = a.getMonth() === b.getMonth() ? `${MONATE[a.getMonth()]}` : `${MONATE[a.getMonth()]} / ${MONATE[b.getMonth()]}`;
   return `${a.getDate()}. bis ${b.getDate()}. ${m}`;
 }

@@ -10,9 +10,9 @@ test('logText: Abwesenheit mit Auto und Zeit, ganzer Tag, offen, kein Auto, gelÃ
   assert.equal(logText('2026-10-21', { art: 'abwesend', wert: null }), 'Mi 21.10.: gelÃ¶scht');
 });
 
-test('logText: Hunderunde mit Person und Zeit', () => {
-  assert.equal(logText('2026-10-22', { art: 'runde', slot: 'morgen', person: 'S', von: 8 }), 'Do 22.10.: Morgen Svenja 08-09');
-  assert.equal(logText('2026-10-22', { art: 'runde', slot: 'nachmittag', person: 'M', von: 16 }), 'Do 22.10.: Nachmittag Manuel 16-17');
+test('logText: Hunderunde mit Person, ohne Uhrzeit', () => {
+  assert.equal(logText('2026-10-22', { art: 'runde', slot: 'morgen', person: 'S', von: 8 }), 'Do 22.10.: Hunde Morgen Svenja');
+  assert.equal(logText('2026-10-22', { art: 'runde', slot: 'nachmittag', person: 'M', von: 16 }), 'Do 22.10.: Hunde Nachmittag Manuel');
 });
 
 test('logEintrag: Zeit als ISO, Name getrimmt, Text', () => {

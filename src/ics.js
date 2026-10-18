@@ -58,10 +58,11 @@ export function baueIcs(tage, jetzt, { nurRav = false } = {}) {
       }, jetzt));
     }
     if (nurRav) continue;
-    for (const slot of ['morgen', 'nachmittag']) {
-      const r = t[slot];
-      if (r.person !== 'S') continue;
-      zeilen.push(...termin({ uid: `${t.datum}-${slot}`, titel: 'Hunde: Svenja', datum: t.datum, von: r.von, bis: r.bis }, jetzt));
+    // Svenjas Runden als ein Ganztagestermin pro Tag; Uhrzeiten werden bewusst nicht exportiert.
+    const runden = ['morgen', 'nachmittag'].filter((slot) => t[slot].person === 'S');
+    if (runden.length > 0) {
+      const welche = runden.map((s) => (s === 'morgen' ? 'Morgen' : 'Nachmittag')).join(' und ');
+      zeilen.push(...termin({ uid: `${t.datum}-hunde`, titel: `Hunde: Svenja (${welche})`, datum: t.datum, ganztag: true }, jetzt));
     }
   }
   zeilen.push('END:VCALENDAR');

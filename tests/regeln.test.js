@@ -40,10 +40,11 @@ test('Handrunde Manuel 05-06 bleibt trotz Abwesenheit ab 6', () => {
   assert.deepEqual([t.morgen.person, t.morgen.von, t.nachmittag.person], ['M', 5, 'S']);
 });
 
-test('wocheAb über Zeitumstellung: Woche 19.10. endet So 25.10., nächste beginnt Mo 26.10.', () => {
+test('wocheAb: nur Mo bis Fr; So 25.10. (Zeitumstellung) gehört zur Woche vom 19.10., Mo 26.10. beginnt die nächste', () => {
   assert.deepEqual(wocheAb(new Date(2026, 9, 25)), [
-    '2026-10-19', '2026-10-20', '2026-10-21', '2026-10-22', '2026-10-23', '2026-10-24', '2026-10-25',
+    '2026-10-19', '2026-10-20', '2026-10-21', '2026-10-22', '2026-10-23',
   ]);
+  assert.deepEqual(wocheAb(new Date(2026, 9, 24, 8)), wocheAb(new Date(2026, 9, 19)));
   assert.equal(wocheAb(new Date(2026, 9, 26, 0, 30))[0], '2026-10-26');
 });
 

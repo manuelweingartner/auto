@@ -38,6 +38,7 @@ export function tageImFenster(heute, docs) {
   const tage = [];
   for (let i = -28; i <= 56; i++) {
     const d = new Date(heute.getFullYear(), heute.getMonth(), heute.getDate() + i, 12);
+    if (d.getDay() === 0 || d.getDay() === 6) continue; // kein Wochenende, wie auf der Seite
     const k = tagSchluessel(d);
     tage.push(loeseTag(k, docs[k]));
   }
