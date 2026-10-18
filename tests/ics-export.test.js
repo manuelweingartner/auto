@@ -54,3 +54,19 @@ test('ohneStempel entfernt nur DTSTAMP-Zeilen', () => {
   assert.equal(ohneStempel(a), ohneStempel(b));
   assert.ok(ohneStempel(a).includes('SUMMARY:x'));
 });
+
+test('dateien liefert den vollen Kalender und den RAV-Kalender', async () => {
+  const { dateien } = await import('../scripts/ics-export.js');
+  const { loeseTag } = await import('../src/regeln.js');
+  const tage = [
+    loeseTag('2026-10-22', { abwesend: { auto: 'kia', von: 7, bis: 22 } }),
+    loeseTag('2026-10-23', { abwesend: { auto: 'rav', von: 7, bis: 16 } }),
+  ];
+  const d = dateien(tage, new Date(Date.UTC(2026, 9, 18, 10)));
+  assert.deepEqual(Object.keys(d).sort(), ['auto-hunde-rav.ics', 'auto-hunde.ics']);
+  assert.ok(d['auto-hunde.ics'].includes('Hunde: Svenja'));
+  assert.ok(d['auto-hunde.ics'].includes('(Kia)'));
+  assert.ok(!d['auto-hunde-rav.ics'].includes('Hunde: Svenja'));
+  assert.ok(!d['auto-hunde-rav.ics'].includes('(Kia)'));
+  assert.ok(d['auto-hunde-rav.ics'].includes('Manuel weg 07-16 (RAV)'));
+});

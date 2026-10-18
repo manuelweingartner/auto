@@ -1,8 +1,10 @@
 // Start, Geheimnis, Ansicht, Woche, Verdrahtung von Raster, Blättern und Speicher.
 import { loeseTag, wocheAb, tagSchluessel, datumAus, docMitAbwesenheit, docMitRunde } from './regeln.js';
 import { rasterHtml } from './raster.js';
-import { blattAbwesend, blattRunde } from './blatt.js';
-import { beobachteWoche, schreibeTeil, loescheTag } from './speicher.js';
+import { blattAbwesend, blattRunde, blattEinstellungen } from './blatt.js';
+import { beobachteWoche, schreibeTeil, loescheTag, ladeAboBasis, schreibeLog, ladeLog } from './speicher.js';
+import { aboLinks } from './links.js';
+import { logEintrag, logHtml } from './log.js';
 
 const MONATE = ['Jan.', 'Feb.', 'März', 'April', 'Mai', 'Juni', 'Juli', 'Aug.', 'Sept.', 'Okt.', 'Nov.', 'Dez.'];
 
@@ -11,15 +13,17 @@ function schreibSpeicher(k, v) { try { localStorage.setItem(k, v); } catch { /* 
 
 function geheimnis() {
   const ausLink = location.hash.replace(/^#/, '').trim();
-  if (/^[a-z0-9]{20,}$/.test(ausLink)) { schreibSpeicher('auto-hunde-geheim', ausLink); return ausLink; }
+  if (/^[a-z0-9]{8,}$/.test(ausLink)) { schreibSpeicher('auto-hunde-geheim', ausLink); return ausLink; }
   return lesSpeicher('auto-hunde-geheim');
 }
 
 const state = {
   geheim: geheimnis(),
-  ansicht: lesSpeicher('auto-hunde-ansicht') === 'autos' ? 'autos' : 'alle',
+  // Standard ist die Autoansicht (Eltern). Manuel und Svenja schalten einmal um, das Gerät merkt es sich.
+  ansicht: lesSpeicher('auto-hunde-ansicht') === 'alle' ? 'alle' : 'autos',
   start: new Date(),
   heute: tagSchluessel(new Date()),
+  name: lesSpeicher('auto-hunde-name') ?? '',
   docs: null, // null: noch kein Snapshot für diese Woche
   stop: null,
 };
@@ -64,12 +68,26 @@ function schliesse() { $('#blatt').close(); }
 
 // Blatt sofort schliessen: Firestore zeigt die Änderung lokal sofort und schickt sie nach,
 // sobald Netz da ist. Nur eine Ablehnung des Servers wird gemeldet.
-function speichere(p) {
+function speichere(p, datum, aenderung) {
   schliesse();
   p.catch((e) => {
     console.error(e);
     $('#meldung').textContent = 'Speichern hat nicht geklappt. Bitte nochmals versuchen.';
     $('#meldung').hidden = false;
+  });
+  // Protokoll ist Beiwerk: ein Fehler dort hält die Änderung nicht auf.
+  schreibeLog(state.geheim, logEintrag(state.name, datum, aenderung)).catch((e) => console.error(e));
+}
+
+function oeffneEinstellungen() {
+  const seite = `${location.origin}${location.pathname}#${state.geheim}`;
+  ladeAboBasis(state.geheim).catch((e) => { console.error(e); return null; }).then((basis) => {
+    blattEinstellungen({
+      name: state.name,
+      seite,
+      links: basis ? aboLinks(basis) : null,
+      logLaden: () => ladeLog(state.geheim).then(logHtml),
+    }, (name) => { state.name = name; schreibSpeicher('auto-hunde-name', name); }, schliesse);
   });
 }
 
@@ -91,11 +109,17 @@ function start() {
     if (!b) return;
     const datum = b.dataset.tag;
     if (b.dataset.slot) {
-      blattRunde(tagVon(datum), b.dataset.slot, (person, von) => speichere(schreibeTeil(state.geheim, datum, docMitRunde(b.dataset.slot, person, von))), schliesse);
+      const slot = b.dataset.slot;
+      blattRunde(tagVon(datum), slot, (person, von) => speichere(
+        schreibeTeil(state.geheim, datum, docMitRunde(slot, person, von)), datum, { art: 'runde', slot, person, von },
+      ), schliesse);
     } else {
-      blattAbwesend(tagVon(datum), (a) => speichere(a === null ? loescheTag(state.geheim, datum) : schreibeTeil(state.geheim, datum, docMitAbwesenheit(a))), schliesse, b.dataset.auto);
+      blattAbwesend(tagVon(datum), (a) => speichere(
+        a === null ? loescheTag(state.geheim, datum) : schreibeTeil(state.geheim, datum, docMitAbwesenheit(a)), datum, { art: 'abwesend', wert: a },
+      ), schliesse, b.dataset.auto);
     }
   });
+  $('#einstellungen').addEventListener('click', oeffneEinstellungen);
   // Seite blieb über Mitternacht offen (Startbildschirm): Heute-Markierung und Startwoche nachziehen.
   document.addEventListener('visibilitychange', () => {
     if (document.visibilityState !== 'visible') return;

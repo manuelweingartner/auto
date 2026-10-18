@@ -3,7 +3,7 @@
 $ErrorActionPreference = 'Stop'
 $repo = Split-Path -Parent $PSScriptRoot
 $geheim = (Get-Content (Join-Path $repo '.secrets\geheim.txt') -Raw).Trim()
-if ($geheim.Length -lt 20) { throw 'Geheimnis fehlt oder ist zu kurz (.secrets\geheim.txt).' }
+if ($geheim.Length -lt 8) { throw 'Geheimnis fehlt oder ist zu kurz (.secrets\geheim.txt).' }
 $vorlage = Get-Content (Join-Path $repo 'firestore.rules.vorlage') -Raw
 [IO.File]::WriteAllText((Join-Path $repo 'firestore.rules'), $vorlage.Replace('__GEHEIM__', $geheim))
 

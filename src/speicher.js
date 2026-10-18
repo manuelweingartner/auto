@@ -3,6 +3,7 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/fireba
 import {
   initializeFirestore, persistentLocalCache, persistentMultipleTabManager,
   collection, doc, query, where, documentId, onSnapshot, setDoc, deleteField,
+  getDoc, getDocs, addDoc, orderBy, limit,
 } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
 import { firebaseConfig } from './firebase-config.js';
 
@@ -27,4 +28,19 @@ export function schreibeTeil(geheim, datum, teil) {
 
 export function loescheTag(geheim, datum) {
   return setDoc(doc(tage(geheim), datum), { abwesend: null, morgen: deleteField(), nachmittag: deleteField() }, { merge: true });
+}
+
+/** Raw-Basis des Abo-Gists, einmalig unter h/{geheim}/meta/abo hinterlegt. null, wenn nicht gesetzt. */
+export async function ladeAboBasis(geheim) {
+  const s = await getDoc(doc(db, 'h', geheim, 'meta', 'abo'));
+  return s.exists() ? (s.data().basis ?? null) : null;
+}
+
+export function schreibeLog(geheim, eintrag) {
+  return addDoc(collection(db, 'h', geheim, 'log'), eintrag);
+}
+
+export async function ladeLog(geheim, anzahl = 30) {
+  const s = await getDocs(query(collection(db, 'h', geheim, 'log'), orderBy('zeit', 'desc'), limit(anzahl)));
+  return s.docs.map((d) => d.data());
 }

@@ -48,24 +48,36 @@ export function ohneStempel(ics) {
   return ics.split('\r\n').filter((z) => !z.startsWith('DTSTAMP:')).join('\r\n');
 }
 
+/** Beide Kalenderdateien des Gists: alles (Svenja, Cozi, Outlook) und nur RAV (Eltern). */
+export function dateien(tage, jetzt) {
+  return {
+    'auto-hunde.ics': baueIcs(tage, jetzt),
+    'auto-hunde-rav.ics': baueIcs(tage, jetzt, { nurRav: true }),
+  };
+}
+
 async function haupt() {
   const { AUTO_HUNDE_GEHEIM: geheim, GIST_TOKEN: token, GIST_ID: gistId } = process.env;
   for (const [n, v] of [['AUTO_HUNDE_GEHEIM', geheim], ['GIST_TOKEN', token], ['GIST_ID', gistId]]) {
     if (!v) { console.error(`Umgebungsvariable ${n} fehlt.`); process.exit(1); }
   }
   const docs = await ladeDocs(firebaseConfig.projectId, firebaseConfig.apiKey, geheim);
-  const ics = baueIcs(tageImFenster(new Date(), docs), new Date());
+  const neuDateien = dateien(tageImFenster(new Date(), docs), new Date());
   const kopf = { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' };
   const alt = await fetch(`https://api.github.com/gists/${gistId}`, { headers: kopf });
   if (!alt.ok) { console.error(`Gist lesen: HTTP ${alt.status}`); process.exit(1); }
-  const bisher = (await alt.json()).files?.['auto-hunde.ics']?.content ?? '';
-  if (ohneStempel(bisher) === ohneStempel(ics)) { console.log('Unverändert, kein Schreiben.'); return; }
+  const bisher = (await alt.json()).files ?? {};
+  const files = {};
+  for (const [name, ics] of Object.entries(neuDateien)) {
+    if (ohneStempel(bisher[name]?.content ?? '') !== ohneStempel(ics)) files[name] = { content: ics };
+  }
+  if (Object.keys(files).length === 0) { console.log('Unverändert, kein Schreiben.'); return; }
   const neu = await fetch(`https://api.github.com/gists/${gistId}`, {
     method: 'PATCH', headers: { ...kopf, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ files: { 'auto-hunde.ics': { content: ics } } }),
+    body: JSON.stringify({ files }),
   });
   if (!neu.ok) { console.error(`Gist schreiben: HTTP ${neu.status}`); process.exit(1); }
-  console.log(`Geschrieben: ${ics.match(/BEGIN:VEVENT/g)?.length ?? 0} Termine.`);
+  for (const [name, f] of Object.entries(files)) console.log(`Geschrieben: ${name}, ${f.content.match(/BEGIN:VEVENT/g)?.length ?? 0} Termine.`);
 }
 
 if (process.argv[1]?.replace(/\\/g, '/').endsWith('/scripts/ics-export.js')) {

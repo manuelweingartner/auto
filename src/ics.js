@@ -34,9 +34,9 @@ function termin({ uid, titel, datum, von, bis, ganztag }, jetzt) {
   return ['BEGIN:VEVENT', `UID:${uid}@auto-hunde`, `DTSTAMP:${stempel(jetzt)}`, ...zeit, `SUMMARY:${titel}`, 'END:VEVENT'];
 }
 
-const KOPF = [
+const kopf = (name) => [
   'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Auto-Hunde//DE', 'CALSCALE:GREGORIAN',
-  'X-WR-CALNAME:Auto-Hunde', 'X-WR-TIMEZONE:Europe/Zurich',
+  `X-WR-CALNAME:${name}`, 'X-WR-TIMEZONE:Europe/Zurich',
   'BEGIN:VTIMEZONE', 'TZID:Europe/Zurich',
   'BEGIN:DAYLIGHT', 'TZOFFSETFROM:+0100', 'TZOFFSETTO:+0200', 'TZNAME:CEST',
   'DTSTART:19700329T020000', 'RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=-1SU', 'END:DAYLIGHT',
@@ -45,16 +45,19 @@ const KOPF = [
   'END:VTIMEZONE',
 ];
 
-export function baueIcs(tage, jetzt) {
-  const zeilen = [...KOPF];
+/** nurRav: Kalender für die Eltern. Nur Tage, an denen der RAV weg oder das Auto noch offen ist;
+ *  kein Kia, kein «kein Auto», keine Hunderunden. */
+export function baueIcs(tage, jetzt, { nurRav = false } = {}) {
+  const zeilen = kopf(nurRav ? 'Auto-Hunde RAV' : 'Auto-Hunde');
   for (const t of tage) {
     const a = t.abwesend;
-    if (a) {
+    if (a && (!nurRav || a.auto === 'rav' || a.auto === 'offen')) {
       zeilen.push(...termin({
         uid: `${t.datum}-abwesend`, titel: titelAbwesend(a), datum: t.datum,
         von: a.von, bis: a.bis, ganztag: a.von == null,
       }, jetzt));
     }
+    if (nurRav) continue;
     for (const slot of ['morgen', 'nachmittag']) {
       const r = t[slot];
       if (r.person !== 'S') continue;

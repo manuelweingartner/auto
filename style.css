@@ -45,7 +45,8 @@ button:focus-visible, select:focus-visible { outline: 2px solid var(--manuel); o
 .wochennav { display: flex; align-items: center; justify-content: space-between; }
 .wochennav > button { min-width: 44px; min-height: 40px; font-size: 26px; line-height: 1; color: var(--muted); }
 .wochentitel { font-size: 17px; font-weight: 600; color: var(--fg); font-variant-numeric: tabular-nums; }
-.ansicht { display: flex; gap: 18px; font-size: 14px; }
+.ansicht { display: flex; gap: 18px; font-size: 14px; align-items: center; }
+.zahnrad { margin-left: auto; width: 36px; height: 32px; display: flex; align-items: center; justify-content: center; color: var(--muted); }
 .ansicht button { color: var(--muted); padding-block: 4px; border-bottom: 2px solid transparent; }
 .ansicht button[aria-pressed="true"] { color: var(--fg); border-bottom-color: var(--fg); }
 
@@ -62,7 +63,7 @@ button:focus-visible, select:focus-visible { outline: 2px solid var(--manuel); o
 .tagknopf { width: 100%; padding: 6px 0 4px; display: flex; flex-direction: column; line-height: 1.1; }
 .tagknopf .wt { font-size: 13px; font-weight: 600; }
 .tagknopf .dt { font-size: 11px; color: var(--muted); }
-.rl { display: block; }
+.rl { display: block; hyphens: manual; }
 .autobild { display: block; width: 54px; height: auto; }
 
 .runde, .auto { width: 100%; min-height: 44px; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.1; }
@@ -99,6 +100,16 @@ input[type="checkbox"] { width: 20px; height: 20px; }
 .knoepfe .leise { color: var(--muted); }
 .knoepfe .laut { background: var(--fg); color: var(--bg); font-weight: 600; }
 .knoepfe .laut:disabled { opacity: .35; cursor: default; }
+
+.einstellungen { max-height: 85vh; overflow: auto; }
+.abschnitt { display: flex; flex-direction: column; gap: 6px; }
+.abschnitt h3 { margin: 0; font-size: 14px; font-weight: 600; }
+input[type="text"] { font: inherit; padding: 7px 9px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); color: var(--fg); width: 100%; }
+.linkzeile { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 14px; }
+.linkzeile a, .linkzeile .kopie { color: var(--manuel); text-decoration: none; padding: 2px 0; }
+.log { list-style: none; margin: 0; padding: 0; font-size: 13px; max-height: 32vh; overflow: auto; }
+.log li { padding: 5px 0; border-top: 1px solid var(--line); }
+.log time { color: var(--muted); margin-right: 6px; font-variant-numeric: tabular-nums; }
 
 @media (prefers-reduced-motion: no-preference) { dialog[open] { animation: auf .12s ease-out; } }
 @keyframes auf { from { opacity: 0; transform: translateY(6px); } }

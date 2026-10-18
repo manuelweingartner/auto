@@ -42,7 +42,7 @@ export function rasterHtml(tage, ansicht, heute) {
   const zeilen = [];
   if (ansicht === 'alle') {
     zeilen.push(zeile('<span class="rl">Morgen</span>', tage.map((t) => hundeZelle(t, 'morgen')).join(''), 'hunde'));
-    zeilen.push(zeile('<span class="rl">Nachmittag</span>', tage.map((t) => hundeZelle(t, 'nachmittag')).join(''), 'hunde'));
+    zeilen.push(zeile('<span class="rl">Nach&shy;mittag</span>', tage.map((t) => hundeZelle(t, 'nachmittag')).join(''), 'hunde'));
   }
   zeilen.push(zeile('<img src="bilder/kia.png" alt="Kia PV5" class="autobild">', tage.map((t) => autoZelle(t, 'kia')).join(''), 'autos'));
   zeilen.push(zeile('<img src="bilder/rav.png" alt="Toyota RAV" class="autobild">', tage.map((t) => autoZelle(t, 'rav')).join(''), 'autos'));

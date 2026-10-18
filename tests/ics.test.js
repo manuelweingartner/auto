@@ -60,3 +60,14 @@ test('Kopf, stabile UIDs, DTSTAMP in UTC, CRLF', () => {
   assert.ok(s.endsWith('END:VCALENDAR\r\n'));
   assert.ok(s.split('\r\n').every((z) => !z.includes('\n')));
 });
+
+test('nurRav: nur RAV- und offene Abwesenheiten, kein Kia, keine Hunderunden, eigener Kalendername', () => {
+  const s = baueIcs(woche(), JETZT, { nurRav: true });
+  assert.equal(s.match(/BEGIN:VEVENT/g).length, 2);
+  assert.ok(!s.includes('Hunde: Svenja'));
+  assert.ok(!s.includes('(Kia)'));
+  assert.ok(s.includes('SUMMARY:Manuel weg 07-16 (RAV)'));
+  assert.ok(s.includes('SUMMARY:Manuel weg (Auto offen)'));
+  assert.ok(s.includes('X-WR-CALNAME:Auto-Hunde RAV'));
+  assert.ok(baueIcs(woche(), JETZT).includes('X-WR-CALNAME:Auto-Hunde\r\n'));
+});

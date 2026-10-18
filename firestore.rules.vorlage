@@ -1,7 +1,7 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{db}/documents {
-    match /h/{k}/tage/{d} {
+    match /h/{k}/{sammlung}/{d} {
       allow read, write: if k == '__GEHEIM__';
     }
   }

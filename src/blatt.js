@@ -21,10 +21,11 @@ function wahl(name, werte, aktiv) {
 }
 
 /** Blatt «Manuel weg». onSave(abwesend|null) bei Speichern, null heisst Tag löschen.
- *  vorwahl: das Auto der angetippten Zelle, wenn noch keines gewählt ist. */
+ *  vorwahl: das Auto der angetippten Zelle. Damit ist ein Autowechsel zwei Tipps:
+ *  andere Autozelle antippen, Speichern. Zeiten bleiben. */
 export function blattAbwesend(tag, onSave, onClose, vorwahl) {
   const a = { ...(tag.abwesend ?? { auto: 'keines', von: 7, bis: 17 }) };
-  if (vorwahl && (!tag.abwesend || a.auto === 'offen')) a.auto = vorwahl;
+  if (vorwahl) a.auto = vorwahl;
   const ganz = a.von == null;
   const el = document.getElementById('blatt');
   el.innerHTML = `
@@ -81,17 +82,20 @@ export function blattAbwesend(tag, onSave, onClose, vorwahl) {
   el.showModal();
 }
 
-/** Blatt «Hunderunde». onSave(person, von). */
+/** Blatt «Hunderunde». onSave(person, von).
+ *  Die andere Person ist vorgewählt, mit ihrer Standardzeit: ein Wechsel M/S ist zwei Tipps. */
 export function blattRunde(tag, slot, onSave, onClose) {
   const r = tag[slot];
+  const person = r.person === 'M' ? 'S' : 'M';
+  const von = STANDARD[slot][person][0];
   const el = document.getElementById('blatt');
   const name = slot === 'morgen' ? 'Hunde am Morgen' : 'Hunde am Nachmittag';
   el.innerHTML = `
     <form method="dialog" class="blattinhalt">
       <h2>${titel(tag.datum)}</h2>
-      <p class="feld">${name}</p>
-      ${wahl('person', [['M', 'Manuel'], ['S', 'Svenja']], r.person)}
-      <div class="zeile"><label>ab ${stunden('von', 4, 21, r.von)} Uhr</label></div>
+      <p class="feld">${name}, bisher ${r.person === 'M' ? 'Manuel' : 'Svenja'} ${zweistellig(r.von)}-${zweistellig(r.bis)}</p>
+      ${wahl('person', [['M', 'Manuel'], ['S', 'Svenja']], person)}
+      <div class="zeile"><label>ab ${stunden('von', 4, 21, von)} Uhr</label></div>
       <div class="knoepfe">
         <span class="platz"></span>
         <button type="button" id="abbrechen" class="leise">Abbrechen</button>
@@ -110,4 +114,57 @@ export function blattRunde(tag, slot, onSave, onClose) {
   });
   el.querySelector('#abbrechen').addEventListener('click', onClose);
   el.showModal();
+}
+
+const escAttr = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+function linkZeile(l) {
+  return `<div class="linkzeile">
+      <a href="${escAttr(l.webcal)}">iPhone: abonnieren</a>
+      <a href="${escAttr(l.google)}" target="_blank" rel="noopener">Android: Google Kalender</a>
+      <button type="button" class="kopie" data-kopie="${escAttr(l.https)}">Adresse kopieren</button>
+    </div>`;
+}
+
+/** Blatt «Einstellungen»: Name für den Log, Links zum Kopieren, Änderungsprotokoll.
+ *  opts: { name, seite, links|null, logLaden: () => Promise<html> }, onName(name), onClose(). */
+export function blattEinstellungen(opts, onName, onClose) {
+  const el = document.getElementById('blatt');
+  const abo = opts.links
+    ? `<section class="abschnitt"><h3>Kalender «Autos und Hunde»</h3><p class="feld">Für Svenja, Cozi und Outlook.</p>${linkZeile(opts.links.alle)}</section>
+       <section class="abschnitt"><h3>Kalender «nur RAV»</h3><p class="feld">Für die Eltern: nur Tage, an denen der RAV weg oder das Auto noch offen ist.</p>${linkZeile(opts.links.rav)}</section>`
+    : '<p class="feld">Abo-Adresse ist nicht hinterlegt.</p>';
+  el.innerHTML = `
+    <form method="dialog" class="blattinhalt einstellungen">
+      <h2>Einstellungen</h2>
+      <section class="abschnitt">
+        <label class="feld" for="name">Dein Name auf diesem Gerät (für das Protokoll)</label>
+        <input type="text" id="name" value="${escAttr(opts.name ?? '')}" placeholder="z.B. Manuel" autocomplete="off">
+      </section>
+      <section class="abschnitt">
+        <h3>Seite</h3>
+        <div class="linkzeile"><button type="button" class="kopie" data-kopie="${escAttr(opts.seite)}">Link zur Seite kopieren</button></div>
+      </section>
+      ${abo}
+      <section class="abschnitt"><h3>Änderungen</h3><div id="log"><p class="feld">Lade …</p></div></section>
+      <div class="knoepfe"><span class="platz"></span><button type="button" id="schliessen" class="laut">Fertig</button></div>
+    </form>`;
+  el.querySelector('form').addEventListener('click', async (e) => {
+    const b = e.target.closest('[data-kopie]');
+    if (!b) return;
+    const alt = b.textContent;
+    try {
+      await navigator.clipboard.writeText(b.dataset.kopie);
+      b.textContent = 'Kopiert';
+    } catch (err) {
+      console.error(err);
+      window.prompt('Zum Kopieren markieren:', b.dataset.kopie);
+    }
+    setTimeout(() => { b.textContent = alt; }, 1500);
+  });
+  el.querySelector('#name').addEventListener('change', (e) => onName(e.target.value.trim()));
+  el.querySelector('#schliessen').addEventListener('click', () => { onName(el.querySelector('#name').value.trim()); onClose(); });
+  el.showModal();
+  opts.logLaden().then((html) => { const z = el.querySelector('#log'); if (z) z.innerHTML = html; })
+    .catch((err) => { console.error(err); const z = el.querySelector('#log'); if (z) z.innerHTML = '<p class="feld">Protokoll konnte nicht geladen werden.</p>'; });
 }
