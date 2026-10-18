@@ -83,6 +83,7 @@ async function haupt() {
   for (const [name, f] of Object.entries(files)) console.log(`Geschrieben: ${name}, ${f.content.match(/BEGIN:VEVENT/g)?.length ?? 0} Termine.`);
 }
 
-if (process.argv[1]?.replace(/\\/g, '/').endsWith('/scripts/ics-export.js')) {
+// Im Cloudflare Worker gibt es kein process; dort werden nur die Funktionen importiert.
+if (typeof process !== 'undefined' && process.argv?.[1]?.replace(/\\/g, '/').endsWith('/scripts/ics-export.js')) {
   haupt().catch((e) => { console.error(e); process.exit(1); });
 }
