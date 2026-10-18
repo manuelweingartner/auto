@@ -36,13 +36,13 @@ test('Manuel-Kalender kommt live aus Firestore als text/calendar', async () => {
   assert.equal(r.headers.get('content-type'), 'text/calendar; charset=utf-8');
   const ics = await r.text();
   assert.ok(ics.includes('X-WR-CALNAME:Auto Manuel'));
-  assert.ok(ics.includes('SUMMARY:Manuel weg 7 bis 22 Uhr ca. (mit Toyota)'));
-  assert.ok(ics.includes('SUMMARY:Manuel weg (ohne Auto)'));
+  assert.ok(ics.includes('SUMMARY:Manuel weg 7 bis 22 Uhr (mit Toyota)'));
+  assert.ok(ics.includes('SUMMARY:Manuel ganzer Tag weg mit Abendessen (ohne Auto)'));
 });
 
 test('RAV-Kalender enthält nur den RAV-Tag, Hunde-Kalender keine Abwesenheit', async () => {
   const rav = await (await antwort(new Request('https://w.example/g/auto-hunde-rav.ics'), env, fetchFn, jetzt)).text();
-  assert.ok(rav.includes('SUMMARY:Manuel hat Toyota 7 bis 22 Uhr ca.'));
+  assert.ok(rav.includes('SUMMARY:Manuel hat Toyota 7 bis 22 Uhr'));
   assert.ok(!rav.includes('ohne Auto'));
   const hunde = await (await antwort(new Request('https://w.example/g/auto-hunde-hunde.ics'), env, fetchFn, jetzt)).text();
   assert.ok(hunde.includes('X-WR-CALNAME:Hunde Svenja'));

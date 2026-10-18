@@ -21,13 +21,14 @@ function stempel(jetzt) {
   return jetzt.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
 }
 
-// Im Kalender ausgeschrieben und mit «ca.», weil die Stunden grob sind (Wunsch Manuel 18.10.2026).
-const zeitWorte = (a) => `${a.von} bis ${a.bis} Uhr ca.`;
+// Im Kalender ausgeschrieben, ohne «ca.» (Wunsch Manuel 18.10.2026).
+const zeitWorte = (a) => `${a.von} bis ${a.bis} Uhr`;
 
 function titelAbwesend(a) {
   const auto = AUTO_NAME[a.auto];
   const klammer = auto ? ` (${auto})` : '';
-  if (a.von == null) return `Manuel weg${klammer}`;
+  // Ganztägig heisst in der Familie: auch zum Abendessen nicht da (Wortlaut Manuel 18.10.2026).
+  if (a.von == null) return `Manuel ganzer Tag weg mit Abendessen${klammer}`;
   return `Manuel weg ${zeitWorte(a)}${klammer}`;
 }
 

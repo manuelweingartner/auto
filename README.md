@@ -19,9 +19,9 @@ unter `___PRIVAT\Auto-Hunde`.
   noch offen oder kein Auto, ganzer Tag oder von-bis in vollen Stunden. «Noch
   offen» heisst: Manuel ist weg, das Auto wird später festgelegt; die Seite
   zeigt «offen» in beiden Autozeilen, der Eltern-Kalender zeigt nichts, der
-  Cozi-Kalender «Auto Manuel» zeigt «Manuel weg (Auto noch offen)». «Kein Auto»
+  Cozi-Kalender «Auto Manuel» zeigt «Manuel ganzer Tag weg mit Abendessen (Auto noch offen)». «Kein Auto»
   (Zug) steht ebenso in beiden Autozeilen als «ohne Auto», im Cozi-Kalender
-  als «Manuel weg 7 bis 17 Uhr ca. (ohne Auto)», bei den Eltern nicht. «Löschen» setzt
+  als «Manuel weg 7 bis 17 Uhr (ohne Auto)», bei den Eltern nicht. «Löschen» setzt
   den Tag auf Normalfall zurück.
 - Tippen auf M oder S: die andere Person ist vorgewählt, Speichern genügt
   (zwei Tipps). Startstunde änderbar.
@@ -69,14 +69,14 @@ einmal ausfällt (alte Basis in `.secrets/abo-url-gist.txt`).
   Abwesenheiten. In Cozi als Kalender von Svenja eintragen, dann steht jede
   neue oder verschobene Runde automatisch bei ihr.
 - `auto-hunde-manuel.ics` («Auto Manuel», Cozi): alle Abwesenheiten von
-  Manuel («Manuel weg 7 bis 22 Uhr ca. (mit Kia)», «Manuel weg (mit Toyota)»,
-  «Manuel weg 7 bis 17 Uhr ca. (ohne Auto)», «Manuel weg (Auto noch offen)», also auch der
+  Manuel («Manuel weg 7 bis 22 Uhr (mit Kia)», «Manuel ganzer Tag weg mit Abendessen (mit Toyota)»,
+  «Manuel weg 7 bis 17 Uhr (ohne Auto)», «Manuel ganzer Tag weg mit Abendessen (Auto noch offen)», also auch der
   vorbelegte Mittwoch; Entscheid 18.10.2026 abends, nach kurzem Ausschluss
   der offenen Tage), keine Hunderunden. In Cozi als Kalender von Manuel
   eintragen. Cozi ordnet ein Abo als Ganzes einer Person zu, darum pro Person
   ein eigener Kalender.
 - `auto-hunde-rav.ics` («nur RAV», Eltern, iPhone): nur Tage, an denen der RAV
-  weg ist, als «Manuel hat Toyota 7 bis 16 Uhr ca.» bzw. «Manuel hat Toyota
+  weg ist, als «Manuel hat Toyota 7 bis 16 Uhr» bzw. «Manuel hat Toyota
   (ganzer Tag)». Kein Kia, keine Hunde, und Tage mit noch offenem Auto
   erscheinen erst, sobald der RAV festgelegt ist (Entscheid 18.10.2026).
 

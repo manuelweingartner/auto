@@ -17,21 +17,21 @@ test('Woche 19.10.: 5 Termine (Di weg, Mi ganztägig, Mi Hunde, Do weg, Do Hunde
 
 test('Abwesenheit mit Zeit als Termin mit Ortszeit', () => {
   const s = ics();
-  assert.ok(s.includes('SUMMARY:Manuel weg 7 bis 22 Uhr ca. (mit Kia)'));
+  assert.ok(s.includes('SUMMARY:Manuel weg 7 bis 22 Uhr (mit Kia)'));
   assert.ok(s.includes('DTSTART;TZID=Europe/Zurich:20261022T070000'));
   assert.ok(s.includes('DTEND;TZID=Europe/Zurich:20261022T220000'));
 });
 
 test('Ganzer Tag mit offenem Auto als Ganztagestermin', () => {
   const s = ics();
-  assert.ok(s.includes('SUMMARY:Manuel weg (Auto noch offen)'));
+  assert.ok(s.includes('SUMMARY:Manuel ganzer Tag weg mit Abendessen (Auto noch offen)'));
   assert.ok(s.includes('DTSTART;VALUE=DATE:20261021'));
   assert.ok(s.includes('DTEND;VALUE=DATE:20261022'));
 });
 
 test('Svenja-Runden als ein Ganztagestermin pro Tag ohne Uhrzeit, keine Manuel-Runden', () => {
   const s = ics();
-  // Mi 21.10.: beide Runden Svenja. Do 22.10.: Manuel weg 7 bis 22 Uhr ca., nur der Nachmittag geht an Svenja.
+  // Mi 21.10.: beide Runden Svenja. Do 22.10.: Manuel weg 7 bis 22 Uhr, nur der Nachmittag geht an Svenja.
   assert.ok(s.includes('DTSTART;VALUE=DATE:20261021\r\nDTEND;VALUE=DATE:20261022\r\nSUMMARY:Hunde: Svenja (Morgen und Nachmittag)'));
   assert.ok(s.includes('DTSTART;VALUE=DATE:20261022\r\nDTEND;VALUE=DATE:20261023\r\nSUMMARY:Hunde: Svenja (Nachmittag)'));
   // jeder Hunde-Termin ist ganztägig, keiner trägt eine Uhrzeit
@@ -43,7 +43,7 @@ test('Svenja-Runden als ein Ganztagestermin pro Tag ohne Uhrzeit, keine Manuel-R
 test('Ende 24 Uhr wird 00:00 des Folgetags', () => {
   const t = loeseTag('2026-10-23', { abwesend: { auto: 'keines', von: 7, bis: 24 } });
   const s = baueIcs([t], JETZT);
-  assert.ok(s.includes('SUMMARY:Manuel weg 7 bis 24 Uhr ca. (ohne Auto)'));
+  assert.ok(s.includes('SUMMARY:Manuel weg 7 bis 24 Uhr (ohne Auto)'));
   assert.ok(s.includes('DTEND;TZID=Europe/Zurich:20261024T000000'));
 });
 
@@ -78,10 +78,10 @@ test('nurManuel: Kia, RAV, ohne Auto und noch offen (auch der Mittwoch), keine H
   tage.push(loeseTag('2026-10-26', { abwesend: { auto: 'keines', von: 7, bis: 17 } }));
   const s = baueIcs(tage, JETZT, { nurManuel: true });
   assert.equal(s.match(/BEGIN:VEVENT/g).length, 4);
-  assert.ok(s.includes('SUMMARY:Manuel weg 7 bis 16 Uhr ca. (mit Toyota)'));
-  assert.ok(s.includes('SUMMARY:Manuel weg (Auto noch offen)'));
-  assert.ok(s.includes('SUMMARY:Manuel weg 7 bis 22 Uhr ca. (mit Kia)'));
-  assert.ok(s.includes('SUMMARY:Manuel weg 7 bis 17 Uhr ca. (ohne Auto)'));
+  assert.ok(s.includes('SUMMARY:Manuel weg 7 bis 16 Uhr (mit Toyota)'));
+  assert.ok(s.includes('SUMMARY:Manuel ganzer Tag weg mit Abendessen (Auto noch offen)'));
+  assert.ok(s.includes('SUMMARY:Manuel weg 7 bis 22 Uhr (mit Kia)'));
+  assert.ok(s.includes('SUMMARY:Manuel weg 7 bis 17 Uhr (ohne Auto)'));
   assert.ok(!s.includes('Hunde: Svenja'));
   assert.ok(s.includes('X-WR-CALNAME:Auto Manuel'));
 });
@@ -95,7 +95,7 @@ test('nurRav: nur RAV-Abwesenheiten als «Manuel hat Toyota», kein Kia, kein of
   assert.ok(!s.includes('(mit Kia)'));
   assert.ok(!s.includes('noch offen'));
   assert.ok(!s.includes('Manuel weg'));
-  assert.ok(s.includes('SUMMARY:Manuel hat Toyota 7 bis 16 Uhr ca.\r\n'));
+  assert.ok(s.includes('SUMMARY:Manuel hat Toyota 7 bis 16 Uhr\r\n'));
   assert.ok(s.includes('SUMMARY:Manuel hat Toyota (ganzer Tag)\r\n'));
   assert.ok(s.includes('X-WR-CALNAME:Auto-Hunde RAV'));
   assert.ok(baueIcs(woche(), JETZT).includes('X-WR-CALNAME:Auto-Hunde\r\n'));

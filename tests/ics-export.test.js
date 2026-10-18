@@ -67,10 +67,10 @@ test('dateien liefert genau drei Kalender: Hunde Svenja, Auto Manuel, nur RAV', 
   assert.deepEqual(Object.keys(d).sort(), ['auto-hunde-hunde.ics', 'auto-hunde-manuel.ics', 'auto-hunde-rav.ics']);
   assert.ok(d['auto-hunde-hunde.ics'].includes('Hunde: Svenja'));
   assert.ok(!d['auto-hunde-hunde.ics'].includes('Manuel weg'));
-  assert.ok(d['auto-hunde-manuel.ics'].includes('Manuel weg 7 bis 22 Uhr ca. (mit Kia)'));
-  assert.ok(d['auto-hunde-manuel.ics'].includes('Manuel weg 7 bis 16 Uhr ca. (mit Toyota)'));
+  assert.ok(d['auto-hunde-manuel.ics'].includes('Manuel weg 7 bis 22 Uhr (mit Kia)'));
+  assert.ok(d['auto-hunde-manuel.ics'].includes('Manuel weg 7 bis 16 Uhr (mit Toyota)'));
   assert.ok(!d['auto-hunde-manuel.ics'].includes('Hunde: Svenja'));
   assert.ok(!d['auto-hunde-rav.ics'].includes('Hunde: Svenja'));
   assert.ok(!d['auto-hunde-rav.ics'].includes('(mit Kia)'));
-  assert.ok(d['auto-hunde-rav.ics'].includes('Manuel hat Toyota 7 bis 16 Uhr ca.'));
+  assert.ok(d['auto-hunde-rav.ics'].includes('Manuel hat Toyota 7 bis 16 Uhr'));
 });
