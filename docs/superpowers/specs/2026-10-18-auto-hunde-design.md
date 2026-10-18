@@ -94,6 +94,9 @@ https://claude.ai/artifact/5f2nok2BFe8AWqg69zLGYT).
   hervorgehoben.
 - Umschalter «Hunde und Autos» / «Nur Autos». In «Nur Autos» fehlen die
   Hundezeilen. Das Gerät merkt sich die zuletzt gewählte Ansicht.
+- **Schlicht und schön, kein AI-Standard-Look (Manuel):** keine Badges oder
+  Pillen, keine farbigen Seitenstreifen, keine Hinweisboxen. Ruhige Tabelle,
+  Farbe nur als Textfarbe für Personen und Autos.
 - **Super einfach und übersichtlich ist die oberste Regel.** Ändern heisst
   antippen und auswählen, keine Menüs, keine Einstellungsseiten.
 - Tippen auf einen Tag öffnet ein kleines Feld: Auto (Kia, RAV, keines), von-bis
@@ -157,10 +160,11 @@ beim Einrichten bestätigen). Künftige Handeinträge löscht er beim Umstieg.
   ICS-Datei in ein **geheimes Gist** von `manuelweingartner`. Cozi und Outlook
   abonnieren die feste Raw-URL ohne Revisions-Hash. Intervall so kurz, wie
   GitHub es zulässt (alle 5 bis 15 Minuten). Kostet nichts.
-- Die Action nutzt einen eigens angelegten Service Account des neuen Projekts als
-  Repo-Secret und prüft die `project_id` (die Umgebung von Manuels Rechner zeigt
-  per `GOOGLE_APPLICATION_CREDENTIALS` auf ein mietsenkung-Konto; lokale Skripte
-  dürfen sich nie darauf verlassen).
+- Die Action liest Firestore per REST mit demselben Geheimnis wie die Seite (als
+  Repo-Secret). Ein Service Account ist damit unnötig (geändert beim Planen,
+  Claudes Wahl). Lokale Firebase-Befehle laufen mit geleertem
+  `GOOGLE_APPLICATION_CREDENTIALS`, weil die Variable auf ein mietsenkung-Konto
+  zeigt.
 
 ## Ziele
 
