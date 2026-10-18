@@ -43,6 +43,7 @@ function zeichne() {
   $('#woche').textContent = wochenTitel(datums);
   $('#raster').innerHTML = rasterHtml(tage, state.ansicht, state.heute);
   $('#raster .raster').classList.toggle('laedt', state.docs === null);
+  document.body.dataset.ansicht = state.ansicht; // Legende zeigt M/S nur mit den Hunderunden
   document.querySelectorAll('[data-ansicht]').forEach((b) => b.setAttribute('aria-pressed', b.dataset.ansicht === state.ansicht));
 }
 
