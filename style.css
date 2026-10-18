@@ -1,0 +1,99 @@
+/* Schlicht: eine Schrift, feine Linien, Farbe nur als Textfarbe. */
+:root {
+  --bg: #fbfbf9;
+  --fg: #1f2421;
+  --muted: #7a827c;
+  --line: #d9ddd8;
+  --heute: #1f2421;
+  --manuel: #2b62a8;
+  --svenja: #b8432c;
+  --kia: #3f6b4a;
+  --rav: #7a5230;
+  --font: -apple-system, "Segoe UI", system-ui, Roboto, sans-serif;
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #181b19;
+    --fg: #e9ece9;
+    --muted: #9ba39d;
+    --line: #353b37;
+    --heute: #e9ece9;
+    --manuel: #8fb8ec;
+    --svenja: #f0a08c;
+    --kia: #9ccb9f;
+    --rav: #d2a877;
+  }
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--font); font-size: 16px; line-height: 1.3; }
+body {
+  padding-block: calc(env(safe-area-inset-top, 0px) + 10px) calc(env(safe-area-inset-bottom, 0px) + 24px);
+  padding-left: max(12px, env(safe-area-inset-left, 0px));
+  padding-right: max(12px, env(safe-area-inset-right, 0px));
+}
+main { max-width: 640px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+button:focus-visible, select:focus-visible { outline: 2px solid var(--manuel); outline-offset: 2px; }
+
+.meldung { max-width: 640px; margin: 24px auto; font-size: 17px; }
+
+.kopf { display: flex; flex-direction: column; gap: 8px; }
+.wochennav { display: flex; align-items: center; justify-content: space-between; }
+.wochennav > button { min-width: 44px; min-height: 40px; font-size: 26px; line-height: 1; color: var(--muted); }
+.wochentitel { font-size: 17px; font-weight: 600; color: var(--fg); font-variant-numeric: tabular-nums; }
+.ansicht { display: flex; gap: 18px; font-size: 14px; }
+.ansicht button { color: var(--muted); padding-block: 4px; border-bottom: 2px solid transparent; }
+.ansicht button[aria-pressed="true"] { color: var(--fg); border-bottom-color: var(--fg); }
+
+.raster { width: 100%; border-collapse: collapse; table-layout: fixed; font-variant-numeric: tabular-nums; }
+.raster th, .raster td { border-top: 1px solid var(--line); padding: 0; text-align: center; vertical-align: middle; }
+.raster thead th { border-top: 0; }
+.raster col, .raster th:first-child, .raster td:first-child { width: 58px; }
+.raster thead th:first-child { width: 58px; }
+.raster tbody th { text-align: left; font-weight: 400; color: var(--muted); font-size: 12px; padding-right: 4px; }
+.raster th.heute .tagknopf { outline: 1.5px solid var(--heute); outline-offset: -1.5px; border-radius: 4px; }
+.tagknopf { width: 100%; padding: 6px 0 4px; display: flex; flex-direction: column; line-height: 1.1; }
+.tagknopf .wt { font-size: 13px; font-weight: 600; }
+.tagknopf .dt { font-size: 11px; color: var(--muted); }
+.rl { display: block; }
+.autobild { display: block; width: 54px; height: auto; }
+
+.runde, .auto { width: 100%; min-height: 44px; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.1; }
+.runde { font-size: 18px; font-weight: 700; }
+.runde .zeit { font-size: 10px; font-weight: 400; color: var(--muted); }
+.pM { color: var(--manuel); }
+.pS { color: var(--svenja); }
+.auto { font-size: 12px; font-weight: 600; padding: 2px; }
+.auto.kia { color: var(--kia); }
+.auto.rav { color: var(--rav); }
+.auto.offen { color: var(--muted); font-weight: 400; font-style: italic; }
+.autos td { height: 54px; }
+
+.legende { font-size: 12px; color: var(--muted); margin: 0; }
+.legende span { font-weight: 700; }
+
+dialog { border: 0; border-radius: 10px; padding: 0; width: min(92vw, 360px); background: var(--bg); color: var(--fg); }
+dialog::backdrop { background: rgba(0, 0, 0, .35); }
+.blattinhalt { padding: 18px 18px 14px; display: flex; flex-direction: column; gap: 12px; }
+.blattinhalt h2 { margin: 0; font-size: 17px; font-weight: 600; }
+.feld { margin: 0; font-size: 13px; color: var(--muted); }
+.wahl { display: flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.wahl button { flex: 1; padding: 10px 4px; font-size: 15px; color: var(--muted); }
+.wahl button + button { border-left: 1px solid var(--line); }
+.wahl button[aria-pressed="true"] { color: var(--fg); font-weight: 600; background: color-mix(in srgb, var(--fg) 8%, transparent); }
+.zeile { display: flex; gap: 14px; align-items: center; font-size: 15px; }
+.zeile label { display: flex; align-items: center; gap: 6px; }
+select { font: inherit; font-size: 16px; padding: 6px 8px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); color: var(--fg); }
+input[type="checkbox"] { width: 20px; height: 20px; }
+.fehler { margin: 0; min-height: 1.2em; font-size: 13px; color: var(--svenja); }
+.knoepfe { display: flex; gap: 10px; align-items: center; }
+.platz { flex: 1; }
+.knoepfe button { padding: 9px 12px; border-radius: 7px; font-size: 15px; }
+.knoepfe .leise { color: var(--muted); }
+.knoepfe .laut { background: var(--fg); color: var(--bg); font-weight: 600; }
+.knoepfe .laut:disabled { opacity: .35; cursor: default; }
+
+@media (prefers-reduced-motion: no-preference) { dialog[open] { animation: auf .12s ease-out; } }
+@keyframes auf { from { opacity: 0; transform: translateY(6px); } }

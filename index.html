@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="de-CH">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Auto-Hunde">
+<title>Auto-Hunde</title>
+<link rel="icon" href="bilder/kia.png">
+<link rel="apple-touch-icon" href="bilder/kia.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<p id="meldung" class="meldung" hidden></p>
+<main id="inhalt">
+  <header class="kopf">
+    <div class="wochennav">
+      <button type="button" id="zurueck" aria-label="Woche zurück">&#8249;</button>
+      <button type="button" id="heute" class="wochentitel"><span id="woche"></span></button>
+      <button type="button" id="vor" aria-label="Woche vor">&#8250;</button>
+    </div>
+    <div class="ansicht" role="group" aria-label="Ansicht">
+      <button type="button" data-ansicht="alle" aria-pressed="true">Hunde und Autos</button>
+      <button type="button" data-ansicht="autos" aria-pressed="false">Nur Autos</button>
+    </div>
+  </header>
+  <div id="raster"></div>
+  <p class="legende"><span class="pM">M</span> Manuel 6-7 Uhr, <span class="pS">S</span> Svenja 8-9 Uhr. Tippen zum Ändern.</p>
+</main>
+<dialog id="blatt"></dialog>
+<script type="module" src="src/app.js"></script>
+</body>
+</html>
