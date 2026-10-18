@@ -18,8 +18,7 @@ unter `___PRIVAT\Auto-Hunde`.
 - Tippen auf den Wochentag oder eine Auto-Zelle: «Manuel weg mit» Kia, RAV,
   noch offen oder kein Auto, ganzer Tag oder von-bis in vollen Stunden. «Noch
   offen» heisst: Manuel ist weg, das Auto wird später festgelegt; die Seite
-  zeigt «offen» in beiden Autozeilen, der Eltern-Kalender zeigt nichts, der
-  Cozi-Kalender «Auto Manuel» zeigt «Manuel weg (Auto offen)». «Kein Auto»
+  zeigt «offen» in beiden Autozeilen, in keinem Kalender steht etwas. «Kein Auto»
   (Zug) steht ebenso in beiden Autozeilen als «ohne Auto», im Cozi-Kalender
   als «Manuel weg 07-17 (ohne Auto)», bei den Eltern nicht. «Löschen» setzt
   den Tag auf Normalfall zurück.
@@ -64,9 +63,11 @@ Basis steht in `.secrets/abo-url.txt` und in Firestore unter
   Abwesenheiten. In Cozi als Kalender von Svenja eintragen, dann steht jede
   neue oder verschobene Runde automatisch bei ihr.
 - `auto-hunde-manuel.ics` («Auto Manuel», Cozi): nur Manuels Abwesenheiten
-  («Manuel weg 07-22 (Kia)», «Manuel weg (RAV)», «Manuel weg (Auto offen)»),
-  keine Hunderunden. In Cozi als Kalender von Manuel eintragen. Cozi ordnet
-  ein Abo als Ganzes einer Person zu, darum pro Person ein eigener Kalender.
+  mit Kia, RAV oder ohne Auto («Manuel weg 07-22 (Kia)», «Manuel weg (RAV)»,
+  «Manuel weg 07-17 (ohne Auto)»), keine Hunderunden und kein «noch offen»
+  (Entscheid 18.10.2026, sonst stünde jeder vorbelegte Mittwoch in Cozi). In
+  Cozi als Kalender von Manuel eintragen. Cozi ordnet ein Abo als Ganzes
+  einer Person zu, darum pro Person ein eigener Kalender.
 - `auto-hunde-rav.ics` («nur RAV», Eltern, iPhone): nur Tage, an denen der RAV
   weg ist. Kein Kia, keine Hunde, und Tage mit noch offenem Auto erscheinen erst,
   sobald der RAV festgelegt ist (Entscheid 18.10.2026).

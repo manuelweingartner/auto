@@ -48,13 +48,15 @@ const kopf = (name) => [
 /** nurRav: Kalender für die Eltern. Nur Tage, an denen der RAV weg ist; kein Kia,
  *  kein offenes Auto (Entscheid Manuel 18.10.2026), kein «kein Auto», keine Hunderunden. */
 /** nurHunde: Kalender für Svenja in Cozi. Nur ihre Hunderunden, keine Abwesenheiten.
- *  nurManuel: Kalender für Manuel in Cozi. Alle seine Abwesenheiten (Kia, RAV, offen), keine Hunderunden. */
+ *  nurManuel: Kalender für Manuel in Cozi. Seine Abwesenheiten mit Kia, RAV oder ohne Auto, keine
+ *  Hunderunden und kein «offen» (Entscheid Manuel 18.10.2026: sonst steht jeder vorbelegte Mittwoch in Cozi). */
 export function baueIcs(tage, jetzt, { nurRav = false, nurHunde = false, nurManuel = false } = {}) {
   const name = nurRav ? 'Auto-Hunde RAV' : nurHunde ? 'Hunde Svenja' : nurManuel ? 'Auto Manuel' : 'Auto-Hunde';
   const zeilen = kopf(name);
   for (const t of tage) {
     const a = t.abwesend;
-    if (a && !nurHunde && (!nurRav || a.auto === 'rav')) {
+    const passt = nurRav ? a?.auto === 'rav' : nurManuel ? a?.auto !== 'offen' : true;
+    if (a && !nurHunde && passt) {
       zeilen.push(...termin({
         uid: `${t.datum}-abwesend`, titel: titelAbwesend(a), datum: t.datum,
         von: a.von, bis: a.bis, ganztag: a.von == null,
