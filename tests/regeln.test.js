@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { loeseTag, wocheAb, pruefeAbwesenheit, tagSchluessel } from '../src/regeln.js';
+import { loeseTag, wocheAb, pruefeAbwesenheit, tagSchluessel, startDatum } from '../src/regeln.js';
 
 test('Di 20.10. RAV 07-16: Manuel beide Runden', () => {
   const t = loeseTag('2026-10-20', { abwesend: { auto: 'rav', von: 7, bis: 16 } });
@@ -75,4 +75,17 @@ test('kaputte Abwesenheit (unbekanntes Auto) zählt als keine', () => {
   const t = loeseTag('2026-10-23', { abwesend: { auto: 'velo', von: 7, bis: 22 } });
   assert.equal(t.abwesend, null);
   assert.equal(t.nachmittag.person, 'M');
+});
+
+test('startDatum: ab Freitag 14 Uhr liegt der Start in der kommenden Woche, davor in der laufenden', () => {
+  // Fr 23.10.2026 13:59 -> laufende Woche (Mo 19.10.)
+  assert.equal(wocheAb(startDatum(new Date(2026, 9, 23, 13, 59)))[0], '2026-10-19');
+  // Fr 23.10.2026 14:00 -> kommende Woche (Mo 26.10.)
+  assert.equal(wocheAb(startDatum(new Date(2026, 9, 23, 14, 0)))[0], '2026-10-26');
+  // Sa und So ebenfalls kommende Woche
+  assert.equal(wocheAb(startDatum(new Date(2026, 9, 24, 8)))[0], '2026-10-26');
+  assert.equal(wocheAb(startDatum(new Date(2026, 9, 25, 23)))[0], '2026-10-26');
+  // Mo bis Do laufende Woche, auch spät am Tag
+  assert.equal(wocheAb(startDatum(new Date(2026, 9, 22, 23)))[0], '2026-10-19');
+  assert.equal(wocheAb(startDatum(new Date(2026, 9, 26, 0)))[0], '2026-10-26');
 });

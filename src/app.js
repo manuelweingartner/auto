@@ -1,5 +1,5 @@
 // Start, Geheimnis, Ansicht, Woche, Verdrahtung von Raster, Blättern und Speicher.
-import { loeseTag, wocheAb, tagSchluessel, datumAus, docMitAbwesenheit, docMitRunde } from './regeln.js';
+import { loeseTag, wocheAb, tagSchluessel, datumAus, docMitAbwesenheit, docMitRunde, startDatum } from './regeln.js';
 import { rasterHtml } from './raster.js';
 import { blattAbwesend, blattRunde, blattEinstellungen } from './blatt.js';
 import { beobachteWoche, schreibeTeil, loescheTag, ladeAboBasis, schreibeLog, ladeLog } from './speicher.js';
@@ -21,7 +21,7 @@ const state = {
   geheim: geheimnis(),
   // Standard ist die Autoansicht (Eltern). Manuel und Svenja schalten einmal um, das Gerät merkt es sich.
   ansicht: lesSpeicher('auto-hunde-ansicht') === 'alle' ? 'alle' : 'autos',
-  start: new Date(),
+  start: startDatum(new Date()),
   heute: tagSchluessel(new Date()),
   name: lesSpeicher('auto-hunde-name') ?? '',
   docs: null, // null: noch kein Snapshot für diese Woche
@@ -101,7 +101,7 @@ function start() {
   }
   $('#zurueck').addEventListener('click', () => { state.start.setDate(state.start.getDate() - 7); abonniere(); });
   $('#vor').addEventListener('click', () => { state.start.setDate(state.start.getDate() + 7); abonniere(); });
-  $('#heute').addEventListener('click', () => { state.start = new Date(); abonniere(); });
+  $('#heute').addEventListener('click', () => { state.start = startDatum(new Date()); abonniere(); });
   document.querySelectorAll('[data-ansicht]').forEach((b) => b.addEventListener('click', () => {
     state.ansicht = b.dataset.ansicht; schreibSpeicher('auto-hunde-ansicht', state.ansicht); zeichne();
   }));
@@ -126,9 +126,9 @@ function start() {
     if (document.visibilityState !== 'visible') return;
     const heute = tagSchluessel(new Date());
     if (heute === state.heute) return;
-    const zeigteHeute = wocheAb(state.start)[0] === wocheAb(datumAus(state.heute))[0];
+    const zeigteStartwoche = wocheAb(state.start)[0] === wocheAb(startDatum(datumAus(state.heute)))[0];
     state.heute = heute;
-    if (zeigteHeute) { state.start = new Date(); abonniere(); } else zeichne();
+    if (zeigteStartwoche) { state.start = startDatum(new Date()); abonniere(); } else zeichne();
   });
   abonniere();
 }

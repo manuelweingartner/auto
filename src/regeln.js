@@ -25,6 +25,16 @@ export function datumAus(schluessel) {
   return new Date(j, m - 1, t, 12);
 }
 
+/** Welche Woche die Seite beim Öffnen zeigt: ab Freitag 14 Uhr (und am Wochenende)
+ *  schon die kommende, weil die Koordination freitags für die nächste Woche läuft. */
+export function startDatum(jetzt) {
+  const d = new Date(jetzt);
+  const tag = d.getDay(); // 0 So, 5 Fr, 6 Sa
+  const kommende = tag === 6 || tag === 0 || (tag === 5 && d.getHours() >= 14);
+  if (kommende) d.setDate(d.getDate() + 7);
+  return d;
+}
+
 export function wocheAb(d) {
   const montag = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 12);
   montag.setDate(montag.getDate() - ((montag.getDay() + 6) % 7));

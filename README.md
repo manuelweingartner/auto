@@ -30,6 +30,9 @@ unter `___PRIVAT\Auto-Hunde`.
 - Jeder Mittwoch ist vorbelegt: ganzer Tag, Auto «offen», Svenja beide Runden.
 - «Autos» ist die Standardansicht (für die Eltern), «Autos und Hunde» zeigt
   dazu die Runden. Jedes Gerät merkt sich die zuletzt gewählte Ansicht.
+- Beim Öffnen zeigt die Seite die laufende Woche, ab Freitag 14 Uhr und am
+  Wochenende schon die kommende. Der Wochentitel in der Mitte springt dorthin
+  zurück.
 - Alle vier dürfen alles ändern, Änderungen erscheinen sofort bei allen.
 - Bei schlechtem Empfang schliesst das Blatt trotzdem sofort; die Änderung wird
   nachgeschickt, sobald Netz da ist, auch nach Schliessen der App.
