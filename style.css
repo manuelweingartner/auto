@@ -59,13 +59,13 @@ button:focus-visible, select:focus-visible { outline: 2px solid var(--manuel); o
 .raster.laedt tbody { opacity: .45; }
 .raster col, .raster th:first-child, .raster td:first-child { width: 70px; }
 .raster thead th:first-child { width: 70px; }
-.raster tbody th { text-align: left; font-weight: 400; color: var(--muted); font-size: 12px; padding-right: 4px; }
+.raster tbody th { text-align: center; font-weight: 400; color: var(--muted); font-size: 12px; padding-right: 4px; }
 .raster th.heute .tagknopf { outline: 1.5px solid var(--heute); outline-offset: -1.5px; border-radius: 4px; }
 .tagknopf { width: 100%; padding: 6px 0 4px; display: flex; flex-direction: column; line-height: 1.1; }
 .tagknopf .wt { font-size: 13px; font-weight: 600; }
 .tagknopf .dt { font-size: 11px; color: var(--muted); }
 .rl { display: block; white-space: nowrap; }
-.autobild { display: block; width: 54px; height: auto; }
+.autobild { display: block; width: 54px; height: auto; margin: 0 auto; }
 .hundeicon { display: flex; justify-content: center; gap: 1px; font-size: 20px; line-height: 1.2; white-space: nowrap; }
 .hundeicon .braun { filter: sepia(1) saturate(1.6) brightness(.62); }
 .hundeicon .schwarz { filter: brightness(0); }
