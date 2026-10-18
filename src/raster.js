@@ -26,7 +26,8 @@ function autoZelle(t, auto) {
   let inhalt = '';
   if (a && a.auto === auto) inhalt = a.von == null ? 'ganzer Tag' : zeitText(a.von, a.bis);
   else if (a && a.auto === 'offen') inhalt = a.von == null ? 'offen' : `offen ${zeitText(a.von, a.bis)}`;
-  const klasse = a && a.auto === 'offen' ? 'auto offen' : `auto ${auto}`;
+  // Leere Kästchen sind leicht ausgegraut, damit die belegten herausstechen.
+  const klasse = a && a.auto === 'offen' ? 'auto offen' : `auto ${auto}${inhalt ? '' : ' leer'}`;
   return `<td><button type="button" class="${klasse}" data-tag="${t.datum}" data-auto="${auto}">${esc(inhalt)}</button></td>`;
 }
 
@@ -44,7 +45,7 @@ export function rasterHtml(tage, ansicht, heute) {
     zeilen.push(zeile(`<span class="rl">${hunde}Nachmittag</span>`, tage.map((t) => hundeZelle(t, 'nachmittag')).join(''), 'hunde'));
   }
   // RAV zuerst: das Auto der Eltern steht oben (Wunsch Manuel 18.10.2026).
-  zeilen.push(zeile('<img src="bilder/rav.png" alt="Toyota RAV" class="autobild">', tage.map((t) => autoZelle(t, 'rav')).join(''), 'autos'));
-  zeilen.push(zeile('<img src="bilder/kia.png" alt="Kia PV5" class="autobild">', tage.map((t) => autoZelle(t, 'kia')).join(''), 'autos'));
+  zeilen.push(zeile('<span class="rl"><img src="bilder/rav.png" alt="Toyota RAV" class="autobild"><span class="autoname">Toyota</span></span>', tage.map((t) => autoZelle(t, 'rav')).join(''), 'autos'));
+  zeilen.push(zeile('<span class="rl"><img src="bilder/kia.png" alt="Kia PV5" class="autobild"><span class="autoname">Kia</span></span>', tage.map((t) => autoZelle(t, 'kia')).join(''), 'autos'));
   return `<table class="raster"><thead><tr><th></th>${koepfe}</tr></thead><tbody>${zeilen.join('')}</tbody></table>`;
 }

@@ -18,9 +18,19 @@ test('Ansicht alle: fünf Spaltenköpfe Mo bis Fr und die Kia-Zeit', () => {
   assert.ok(h.includes('data-slot='));
 });
 
-test('RAV-Zeile steht über der Kia-Zeile', () => {
+test('Auto-Zelle ohne Eintrag trägt die Klasse leer, mit Eintrag nicht', () => {
+  const h = rasterHtml(tage(), 'autos', '2026-10-19');
+  assert.match(h, /class="auto rav leer" data-tag="2026-10-19"/);
+  assert.match(h, /class="auto rav" data-tag="2026-10-20"/);
+  assert.match(h, /class="auto kia leer" data-tag="2026-10-20"/);
+  assert.match(h, /class="auto offen" data-tag="2026-10-21"/);
+});
+
+test('RAV-Zeile steht über der Kia-Zeile, unter den Fotos steht klein der Name', () => {
   const h = rasterHtml(tage(), 'autos', '2026-10-19');
   assert.ok(h.indexOf('bilder/rav.png') < h.indexOf('bilder/kia.png'));
+  assert.match(h, /<img src="bilder\/rav.png"[^>]*><span class="autoname">Toyota<\/span>/);
+  assert.match(h, /<img src="bilder\/kia.png"[^>]*><span class="autoname">Kia<\/span>/);
 });
 
 test('Ansicht autos: keine Hundezellen', () => {

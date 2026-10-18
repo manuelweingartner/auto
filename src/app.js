@@ -5,7 +5,7 @@ import { blattAbwesend, blattRunde, blattEinstellungen } from './blatt.js';
 import { beobachteWoche, schreibeTeil, loescheTag, ladeAboBasis, schreibeLog, ladeLog } from './speicher.js';
 import { aboLinks } from './links.js';
 import { logEintrag, logHtml } from './log.js';
-import { mussNeuLaden, ladeVersion } from './version.js';
+import { mussNeuLaden, ladeVersion, frischLaden } from './version.js';
 
 const MONATE = ['Jan.', 'Feb.', 'März', 'April', 'Mai', 'Juni', 'Juli', 'Aug.', 'Sept.', 'Okt.', 'Nov.', 'Dez.'];
 
@@ -125,10 +125,20 @@ function start() {
   $('#einstellungen').addEventListener('click', oeffneEinstellungen);
   // Seite blieb offen (Startbildschirm): neue Fassung nachladen, Heute-Markierung und Startwoche nachziehen.
   ladeVersion().then((v) => { state.version = v; });
+  let laedtNeu = false;
+  const pruefeFassung = async () => {
+    if (laedtNeu || document.visibilityState !== 'visible') return false;
+    const aktuell = await ladeVersion();
+    if (!mussNeuLaden(state.version, aktuell, document.getElementById('blatt').open)) return false;
+    laedtNeu = true;
+    await frischLaden(); // sonst nimmt reload() Skripte und Stil noch zehn Minuten aus dem Cache
+    location.reload();
+    return true;
+  };
+  setInterval(pruefeFassung, 60_000);
   document.addEventListener('visibilitychange', async () => {
     if (document.visibilityState !== 'visible') return;
-    const aktuell = await ladeVersion();
-    if (mussNeuLaden(state.version, aktuell, document.getElementById('blatt').open)) { location.reload(); return; }
+    if (await pruefeFassung()) return;
     const heute = tagSchluessel(new Date());
     if (heute === state.heute) return;
     const zeigteStartwoche = wocheAb(state.start)[0] === wocheAb(startDatum(datumAus(state.heute)))[0];
