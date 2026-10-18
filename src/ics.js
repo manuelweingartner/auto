@@ -48,21 +48,19 @@ const kopf = (name) => [
 /** nurRav: Kalender für die Eltern. Nur Tage, an denen der RAV weg ist; kein Kia,
  *  kein offenes Auto (Entscheid Manuel 18.10.2026), kein «kein Auto», keine Hunderunden. */
 /** nurHunde: Kalender für Svenja in Cozi. Nur ihre Hunderunden, keine Abwesenheiten.
- *  nurKia: Kalender für Manuel in Cozi. Nur Tage mit dem Kia, kein RAV, kein offenes Auto
- *  (Entscheid Manuel 18.10.2026), keine Hunderunden. */
-export function baueIcs(tage, jetzt, { nurRav = false, nurHunde = false, nurKia = false } = {}) {
-  const name = nurRav ? 'Auto-Hunde RAV' : nurHunde ? 'Hunde Svenja' : nurKia ? 'Kia Manuel' : 'Auto-Hunde';
+ *  nurManuel: Kalender für Manuel in Cozi. Alle seine Abwesenheiten (Kia, RAV, offen), keine Hunderunden. */
+export function baueIcs(tage, jetzt, { nurRav = false, nurHunde = false, nurManuel = false } = {}) {
+  const name = nurRav ? 'Auto-Hunde RAV' : nurHunde ? 'Hunde Svenja' : nurManuel ? 'Auto Manuel' : 'Auto-Hunde';
   const zeilen = kopf(name);
-  const autoPasst = (a) => (nurRav ? a.auto === 'rav' : nurKia ? a.auto === 'kia' : true);
   for (const t of tage) {
     const a = t.abwesend;
-    if (a && !nurHunde && autoPasst(a)) {
+    if (a && !nurHunde && (!nurRav || a.auto === 'rav')) {
       zeilen.push(...termin({
         uid: `${t.datum}-abwesend`, titel: titelAbwesend(a), datum: t.datum,
         von: a.von, bis: a.bis, ganztag: a.von == null,
       }, jetzt));
     }
-    if (nurRav || nurKia) continue;
+    if (nurRav || nurManuel) continue;
     // Svenjas Runden als ein Ganztagestermin pro Tag; Uhrzeiten werden bewusst nicht exportiert.
     const runden = ['morgen', 'nachmittag'].filter((slot) => t[slot].person === 'S');
     if (runden.length > 0) {

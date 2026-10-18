@@ -56,7 +56,7 @@ test('ohneStempel entfernt nur DTSTAMP-Zeilen', () => {
   assert.ok(ohneStempel(a).includes('SUMMARY:x'));
 });
 
-test('dateien liefert genau drei Kalender: Hunde Svenja, Kia Manuel, nur RAV', async () => {
+test('dateien liefert genau drei Kalender: Hunde Svenja, Auto Manuel, nur RAV', async () => {
   const { dateien } = await import('../scripts/ics-export.js');
   const { loeseTag } = await import('../src/regeln.js');
   const tage = [
@@ -68,7 +68,7 @@ test('dateien liefert genau drei Kalender: Hunde Svenja, Kia Manuel, nur RAV', a
   assert.ok(d['auto-hunde-hunde.ics'].includes('Hunde: Svenja'));
   assert.ok(!d['auto-hunde-hunde.ics'].includes('Manuel weg'));
   assert.ok(d['auto-hunde-manuel.ics'].includes('Manuel weg 07-22 (Kia)'));
-  assert.ok(!d['auto-hunde-manuel.ics'].includes('(RAV)'));
+  assert.ok(d['auto-hunde-manuel.ics'].includes('Manuel weg 07-16 (RAV)'));
   assert.ok(!d['auto-hunde-manuel.ics'].includes('Hunde: Svenja'));
   assert.ok(!d['auto-hunde-rav.ics'].includes('Hunde: Svenja'));
   assert.ok(!d['auto-hunde-rav.ics'].includes('(Kia)'));
