@@ -5,6 +5,7 @@ import { blattAbwesend, blattRunde, blattEinstellungen } from './blatt.js';
 import { beobachteWoche, schreibeTeil, loescheTag, ladeAboBasis, schreibeLog, ladeLog } from './speicher.js';
 import { aboLinks } from './links.js';
 import { logEintrag, logHtml } from './log.js';
+import { mussNeuLaden, ladeVersion } from './version.js';
 
 const MONATE = ['Jan.', 'Feb.', 'März', 'April', 'Mai', 'Juni', 'Juli', 'Aug.', 'Sept.', 'Okt.', 'Nov.', 'Dez.'];
 
@@ -26,6 +27,7 @@ const state = {
   name: lesSpeicher('auto-hunde-name') ?? '',
   docs: null, // null: noch kein Snapshot für diese Woche
   stop: null,
+  version: null, // Fassung aus version.txt beim Start
 };
 
 const $ = (s) => document.querySelector(s);
@@ -121,9 +123,12 @@ function start() {
     }
   });
   $('#einstellungen').addEventListener('click', oeffneEinstellungen);
-  // Seite blieb über Mitternacht offen (Startbildschirm): Heute-Markierung und Startwoche nachziehen.
-  document.addEventListener('visibilitychange', () => {
+  // Seite blieb offen (Startbildschirm): neue Fassung nachladen, Heute-Markierung und Startwoche nachziehen.
+  ladeVersion().then((v) => { state.version = v; });
+  document.addEventListener('visibilitychange', async () => {
     if (document.visibilityState !== 'visible') return;
+    const aktuell = await ladeVersion();
+    if (mussNeuLaden(state.version, aktuell, document.getElementById('blatt').open)) { location.reload(); return; }
     const heute = tagSchluessel(new Date());
     if (heute === state.heute) return;
     const zeigteStartwoche = wocheAb(state.start)[0] === wocheAb(startDatum(datumAus(state.heute)))[0];

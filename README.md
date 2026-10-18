@@ -100,5 +100,11 @@ noch nicht gemessen. Kurzfristiges steht immer zuerst auf der Seite.
   `GIST_TOKEN` ist zurzeit das gh-Token von `manuelweingartner`; ein
   feingranulares Token nur mit Gist-Recht wäre enger.
 - Tests: `npm test` (Fachregeln, ICS, Raster, Export).
+- **`version.txt` bei jedem Commit hochzählen, der Seite, Skripte oder Stil
+  ändert.** Safari und die Startbildschirm-App laden eine offene Seite nie
+  neu; die Seite liest `version.txt` beim Start und beim Zurückkommen am
+  Cache vorbei und lädt sich bei einer neuen Fassung selbst neu (ausser ein
+  Blatt ist offen). Vergisst man das Hochzählen, sehen die Geräte die
+  Änderung erst nach Schliessen der App plus bis zu 10 Minuten Pages-Cache.
 - Das Geheimnis steht nie im Repo: nicht im Code, nicht in `firestore.rules`
   (gitignored), nicht in Commits.
