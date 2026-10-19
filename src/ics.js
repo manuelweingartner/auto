@@ -72,11 +72,15 @@ export function baueIcs(tage, jetzt, { nurRav = false, nurHunde = false, nurManu
       }, jetzt));
     }
     if (nurRav || nurManuel) continue;
-    // Svenjas Runden als ein Ganztagestermin pro Tag; Uhrzeiten werden bewusst nicht exportiert.
-    const runden = ['morgen', 'nachmittag'].filter((slot) => t[slot].person === 'S');
-    if (runden.length > 0) {
+    // Runden als ein Ganztagestermin pro Person und Tag; Uhrzeiten werden bewusst nicht exportiert.
+    // Svenja in jedem Hunde-Kalender, Manuel nur im Sammelkalender (Wunsch 19.10.2026). Svenjas UID
+    // bleibt «-hunde», damit bestehende Abos ihre Termine nicht doppelt bekommen.
+    const personen = nurHunde ? [['S', 'Svenja', '-hunde']] : [['S', 'Svenja', '-hunde'], ['M', 'Manuel', '-hunde-manuel']];
+    for (const [kuerzel, name, uidTeil] of personen) {
+      const runden = ['morgen', 'nachmittag'].filter((slot) => t[slot].person === kuerzel);
+      if (runden.length === 0) continue;
       const welche = runden.map((s) => (s === 'morgen' ? 'Morgen' : 'Nachmittag')).join(' und ');
-      zeilen.push(...termin({ uid: `${t.datum}-hunde`, titel: `Hunde: Svenja (${welche})`, datum: t.datum, ganztag: true }, jetzt));
+      zeilen.push(...termin({ uid: `${t.datum}${uidTeil}`, titel: `Hunde: ${name} (${welche})`, datum: t.datum, ganztag: true }, jetzt));
     }
   }
   zeilen.push('END:VCALENDAR');

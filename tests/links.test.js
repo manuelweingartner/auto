@@ -4,9 +4,10 @@ import { aboLinks } from '../src/links.js';
 
 const BASIS = 'https://gist.githubusercontent.com/jemand/abc123/raw';
 
-test('aboLinks: genau drei Kalender (Hunde Svenja, Auto Manuel, nur RAV) mit https und webcal', () => {
+test('aboLinks: vier Kalender (Hunde Svenja, Auto Manuel, nur RAV, alles) mit https und webcal', () => {
   const l = aboLinks(BASIS);
-  assert.deepEqual(Object.keys(l).sort(), ['hunde', 'manuel', 'rav']);
+  assert.deepEqual(Object.keys(l).sort(), ['alles', 'hunde', 'manuel', 'rav']);
+  assert.equal(l.alles.https, `${BASIS}/auto-hunde.ics`);
   assert.equal(l.hunde.https, `${BASIS}/auto-hunde-hunde.ics`);
   assert.equal(l.manuel.https, `${BASIS}/auto-hunde-manuel.ics`);
   assert.equal(l.rav.https, `${BASIS}/auto-hunde-rav.ics`);

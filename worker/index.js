@@ -6,7 +6,8 @@
 import { ladeDocs, tageImFenster, dateien } from '../scripts/ics-export.js';
 import { firebaseConfig } from '../src/firebase-config.js';
 
-const DATEIEN = ['auto-hunde-hunde.ics', 'auto-hunde-manuel.ics', 'auto-hunde-rav.ics'];
+// auto-hunde.ics ist der Sammelkalender nur für Manuel (nicht im Zahnrad, Wunsch 19.10.2026).
+const DATEIEN = ['auto-hunde-hunde.ics', 'auto-hunde-manuel.ics', 'auto-hunde-rav.ics', 'auto-hunde.ics'];
 
 /** '/<geheim>/<datei>' -> Dateiname oder null. Ein leeres Geheimnis passt nie. */
 export function deuteWeg(pfad, geheim) {

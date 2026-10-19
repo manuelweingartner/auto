@@ -18,7 +18,8 @@ test('deuteWeg kennt nur die drei Dateien unter dem richtigen Geheimnis', () => 
   assert.equal(deuteWeg('/g/auto-hunde-hunde.ics', 'g'), 'auto-hunde-hunde.ics');
   assert.equal(deuteWeg('/g/auto-hunde-rav.ics', 'g'), 'auto-hunde-rav.ics');
   assert.equal(deuteWeg('/falsch/auto-hunde-manuel.ics', 'g'), null);
-  assert.equal(deuteWeg('/g/auto-hunde.ics', 'g'), null);
+  assert.equal(deuteWeg('/g/auto-hunde.ics', 'g'), 'auto-hunde.ics');
+  assert.equal(deuteWeg('/g/auto-hunde-alles.ics', 'g'), null);
   assert.equal(deuteWeg('/g/', 'g'), null);
   assert.equal(deuteWeg('/g/auto-hunde-manuel.ics', ''), null);
 });

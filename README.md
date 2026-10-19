@@ -28,9 +28,9 @@ unter `___PRIVAT\Auto-Hunde`.
 - Autowechsel: die Zelle des anderen Autos tippen, Speichern (zwei Tipps), die
   Zeiten bleiben.
 - Zahnrad oben rechts: eigener Name für das Protokoll, Link zur Seite kopieren,
-  drei Kalender-Abos (zwei für Cozi zum Kopieren, eines für die Eltern zum
-  Abonnieren am iPhone), Änderungsprotokoll (wer hat wann was geändert; der
-  Name kommt vom jeweiligen Gerät).
+  vier Kalender-Abos (zwei für Cozi zum Kopieren, eines für die Eltern zum
+  Abonnieren am iPhone, eines mit allem für Manuel), Änderungsprotokoll (wer
+  hat wann was geändert; der Name kommt vom jeweiligen Gerät).
 - Normalfall: Manuel geht beide Runden. Ist Manuel dann weg, schlägt die Seite
   Svenja vor. Die Seite rechnet dafür intern mit den üblichen Zeiten (Manuel
   06-07 und 16-17, Svenja 08-09), zeigt aber nirgends Uhrzeiten für Hunderunden,
@@ -57,7 +57,7 @@ Seit 18.10.2026 abends liefert ein Cloudflare Worker (`worker/`, Name
 `auto-hunde-ics`, Konto Manuel) die drei Kalender live aus Firestore:
 `https://auto-hunde-ics.auto-hunde.workers.dev/<geheim>/<datei>`. Jeder Abruf
 baut das ICS frisch (60 Sekunden Cache), Action und Gist-Cache fallen damit
-als Verzögerung weg. Das Zahnrad auf der Seite zeigt genau drei Zeilen
+als Verzögerung weg. Das Zahnrad auf der Seite zeigt vier Zeilen
 (Entscheid 18.10.2026, vorher waren es vier Kalender mit je drei Links, zu
 viel zum Kopieren); die Basis steht in `.secrets/abo-url.txt` und in Firestore
 unter `h/<geheim>/meta/abo`. Die GitHub Action schreibt dieselben drei Dateien
@@ -82,8 +82,11 @@ einmal ausfällt (alte Basis in `.secrets/abo-url-gist.txt`).
 
 Alle Abos reichen 4 Wochen zurück und voraus bis zum 31. Dezember des
 nächsten Jahres (Entscheid 18.10.2026), damit jeder vorbelegte Mittwoch
-schon im Kalender steht. Runden von Manuel stehen in keinem Abo. Einen Sammelkalender (Outlook) und
-Android-Links gibt es seit 18.10.2026 nicht mehr.
+schon im Kalender steht. Dazu gibt es seit 19.10.2026 wieder einen
+Sammelkalender `auto-hunde.ics` («Auto-Hunde», Zahnrad «Manuel: alles»): alle
+Abwesenheiten mit Auto-Klammer plus die Hunderunden beider («Hunde: Svenja
+(Nachmittag)», «Hunde: Manuel (Morgen)»). Manuels Runden stehen nur dort, in
+keinem anderen Abo. Android-Links gibt es seit 18.10.2026 nicht mehr.
 
 Einrichten:
 - **Cozi (Manuel):** im Zahnrad bei «Cozi: Hunde Svenja» und «Cozi: Auto
