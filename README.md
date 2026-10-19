@@ -115,10 +115,18 @@ Tests in `tests/worker.test.js`.
 
 - Statische Seite (Vanilla JS, kein Build) auf GitHub Pages aus `main`.
 - Daten in Firestore, Projekt `auto-hunde` (Spark, nur Firestore, eur3):
-  `h/<geheim>/tage/<YYYY-MM-DD>` (Tage), `h/<geheim>/meta/abo` (Gist-Basis),
+  `h/<geheim>/tage/<YYYY-MM-DD>` (Tage), `h/<geheim>/meta/abo` (Abo-Basis,
+  seit 18.10.2026 der Worker, davor das Gist),
   `h/<geheim>/log/<id>` (Änderungsprotokoll). Die Regeln erlauben Lesen und
   Schreiben nur unter dem Geheimnis. Regeln neu deployen: `scripts/regeln-deployen.ps1`
   (braucht Node 20 portable und `firebase login`).
+- Kalender-Abo: Cloudflare Worker `auto-hunde-ics` (`worker/index.js`,
+  `worker/wrangler.toml`, Free-Plan, Konto zurzeit mit Manuels cmiag-Adresse
+  angelegt, bei Gelegenheit auf gmx umziehen). Er importiert `ladeDocs`,
+  `tageImFenster` und `dateien` aus `scripts/ics-export.js` und `baueIcs`
+  aus `src/ics.js`, der Export-Code ist also nur einmal vorhanden. Secret
+  `GEHEIM` auf dem Worker, lokales Login liegt unter `~/.wrangler`;
+  `.wrangler/` im Repo ist Build-Müll und gitignored.
 - GitHub schaltet Cron-Workflows nach 60 Tagen ohne Commit ab; der Workflow
   schaltet sich darum bei jedem Lauf selbst wieder ein. Bleibt das Gist trotzdem
   stehen: unter Actions nachsehen, ob `ics` noch läuft.
